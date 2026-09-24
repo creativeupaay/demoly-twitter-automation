@@ -253,12 +253,16 @@ def run_daily_batch(
     force_live: bool = False,
     spaced: bool = False,
     share_now: bool = False,
+    force_type: Optional[str] = None,
 ) -> None:
     """
     Executes the full 3-post daily cadence across all configured Twitter/X accounts:
     1. Single Tweet (text-only)
     2. Thread (multi-tweet, text-only)
     3. Media Post (with authentic video or image attached)
+
+    When force_type is 'single' or 'thread', generates only 1 post of that type
+    per account (still loops all accounts).
 
     Supports multi-account publishing with strictly unique, persona-tailored content
     and cross-account topic deduplication.
@@ -274,16 +278,20 @@ def run_daily_batch(
     if not accounts:
         accounts = [AccountConfig(id="", name="Default", persona="", target_audience="")]
 
+    posts_per_account = 1 if force_type in ("single", "thread") else 3
+
     print("\n" + "=" * 65)
-    print(" DEMOLY.DEV DAILY 3-POST CADENCE ENGINE (MULTI-ACCOUNT)")
+    print(" DEMOLY.DEV DAILY CADENCE ENGINE (MULTI-ACCOUNT)")
     print(f" Mode: {'[LIVE PUBLISHING]' if is_live else '[SAFE DRY RUN - PREVIEW ONLY]'}")
+    if force_type:
+        print(f" Post Type: {force_type.upper()} only ({posts_per_account} post per account)")
     print(f" Accounts to Process: {len(accounts)} account(s)")
     for idx, acc in enumerate(accounts, 1):
         print(f"   [{idx}] {acc.name} (Channel: {acc.id or '[Default]'})")
     if is_live:
         if share_now:
             print(" Schedule: Publishing all posts IMMEDIATELY (shareNow)")
-        elif spaced:
+        elif spaced and not force_type:
             print(" Schedule: Spacing 3 posts per account at peak Global + Indian windows:")
             print("           * Slot 1: 10:00 AM IST (04:30 UTC) -> Single Tweet")
             print("           * Slot 2:  6:30 PM IST (13:00 UTC / 9:00 AM EST) -> Thread")
@@ -308,25 +316,34 @@ def run_daily_batch(
             print(f" Target Audience: {account.target_audience}")
         print("#" * 65)
 
-        # 1. Plan today's 3 posts with cross-account topic deduplication
+        # 1. Plan today's posts with cross-account topic deduplication
         plan: DailyCadencePlan = plan_daily_cadence(
             account=account if len(accounts) > 1 or account.persona else None,
             batch_excluded_topics=all_used_topics if all_used_topics else None,
         )
+
+        # Filter plan to only the requested type when force_type is set
+        if force_type in ("single", "thread"):
+            plan.items = [it for it in plan.items if it.format == force_type][:1]
+            if not plan.items:
+                # Fallback: take the first item and override its format
+                plan.items = plan.items[:1] if plan.items else [plan.items[0]]
+                plan.items[0].format = force_type
 
         # Register topics so no other account in this run will repeat them
         for it in plan.items:
             all_used_topics.append(it.focus_topic)
 
         print("\n" + "-" * 60)
-        print(f" STRATEGIC CADENCE PLAN FOR {account.name.upper()}:")
+        print(f" CADENCE PLAN FOR {account.name.upper()}:")
         print(f" {plan.trend_analysis}")
         print("-" * 60)
 
-        # 2. Generate 3 unique posts tailored for this account
+        # 2. Generate posts tailored for this account
         generated_posts = []
+        total = len(plan.items)
         for idx, item in enumerate(plan.items, 1):
-            print(f"\n[{idx}/3] Generating Post #{idx} [{item.format.upper()}] for {account.name}...")
+            print(f"\n[{idx}/{total}] Generating Post #{idx} [{item.format.upper()}] for {account.name}...")
             print(f"      Focus Topic: {item.focus_topic}")
             if item.trend_connection:
                 print(f"      Trend/Hashtag Context: {item.trend_connection}")
@@ -343,7 +360,7 @@ def run_daily_batch(
 
         # 3. Preview generated posts
         print("\n" + "=" * 65)
-        print(f" ALL 3 POSTS GENERATED FOR {account.name.upper()}")
+        print(f" ALL {len(generated_posts)} POST(S) GENERATED FOR {account.name.upper()}")
         print("=" * 65)
         for idx, (item, content) in enumerate(generated_posts, 1):
             print(f"\n--- [{account.name}] POST #{idx}: {item.format.upper()} ({content.type.upper()}) ---")
@@ -361,7 +378,7 @@ def run_daily_batch(
 
         # 4. Publish or Log
         if not is_live:
-            print(f"\n[{account.name}] DRY RUN: 3 posts successfully previewed (not sent to Buffer).")
+            print(f"\n[{account.name}] DRY RUN: {len(generated_posts)} post(s) previewed (not sent to Buffer).")
             for item, content in generated_posts:
                 log_published_post(
                     content=content,
@@ -499,6 +516,12 @@ def main():
         action="store_true",
         help="Display current system configuration and safety status",
     )
+    parser.add_argument(
+        "--force-type",
+        choices=["single", "thread"],
+        default=None,
+        help="With --daily-batch: generate only 1 post of this type per account (still runs all accounts)",
+    )
 
     args = parser.parse_args()
 
@@ -525,6 +548,7 @@ def main():
                 force_live=args.live,
                 spaced=args.spaced,
                 share_now=args.share_now,
+                force_type=args.force_type,
             )
             return
 

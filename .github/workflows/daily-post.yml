@@ -65,9 +65,9 @@ jobs:
             CMD_ARGS="--daily-batch --spaced --live"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             if [ "${{ inputs.force_type }}" = "single" ]; then
-              CMD_ARGS="--type single"
+              CMD_ARGS="--daily-batch --force-type single"
             elif [ "${{ inputs.force_type }}" = "thread" ]; then
-              CMD_ARGS="--type thread"
+              CMD_ARGS="--daily-batch --force-type thread"
             elif [ "${{ inputs.force_type }}" = "daily-batch" ]; then
               CMD_ARGS="--daily-batch --spaced"
             else
