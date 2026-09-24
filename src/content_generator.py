@@ -8,7 +8,7 @@ using Gemini structured JSON outputs.
 
 import random
 import re
-from typing import Optional, Any
+from typing import Optional, Any, List
 from pathlib import Path
 
 import csv
