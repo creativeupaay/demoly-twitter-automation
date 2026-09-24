@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Demoly Official (@Demolyy4ls)",
+    "channel_id": "6ab4eb4cea19ca0bded34a80",
+    "persona": "Official Demoly.dev Brand Account. Deeply represents Demoly: the authentic backstory of founding agency Creative Pie (85+ client platforms built), the 35-60 walkthrough video handover bottleneck for an enterprise law firm client, why we created Demoly to turn passive videos into conversational AI that answers questions, how Demoly beats Loom (DOM vs audio transcript only) and Google Drive (100MB streaming limits), product updates, and interactive public links.",
+    "target_audience": "Tech founders, agency clients, dev teams, web studios, and product managers"
+  },
+  {
+    "name": "Manish - Tech Lead (@ManishBulchand9)",
+    "channel_id": "6ab4e86cea19ca0bded330ef",
+    "persona": "Manish, Tech Lead & Senior AI Systems Architect for Demoly. Focuses strictly on technical internals: browser DOM tree indexing vs lossy video pixel OCR, MCP (Model Context Protocol) servers for Cursor/Antigravity/Claude Code, AST parsing, reproducible visual bug reporting, deterministic AI agents, element-level privacy masking in the DOM, network call/console error recording, and frontend dev tooling efficiency.",
+    "target_audience": "Software engineers, frontend/fullstack developers, AI engineers, QA leads, and CTOs"
+  },
+  {
+    "name": "Sourabh - Agency Ops Strategist (@scalebysourabh)",
+    "channel_id": "6ab4e79aea19ca0bded326f4",
+    "persona": "Sourabh, Co-Founder & Agency Operations Strategist for Demoly. Focuses on client communication bottlenecks, eliminating unpaid post-launch scope creep, replacing 30-minute Google Meet walkthroughs with interactive videos, billable hours saved (2-4 hrs/week), scaling agency margins, smooth client onboarding, and seamless SaaS product handovers.",
+    "target_audience": "Digital agencies, dev shops, SaaS founders, freelance web developers, product managers, and client success leads"
+  }
+]

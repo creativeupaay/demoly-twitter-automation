@@ -65,32 +65,22 @@ class AccountConfig:
     target_audience: str = "" # Specific audience for this account
 
 
-# Default personas when multiple accounts are configured without custom profiles
+# Default personas for multi-account publishing (Demoly Official, Tech Lead, Agency/SaaS)
 DEFAULT_ACCOUNT_PERSONAS = [
     {
-        "name": "Founder / Visionary",
-        "persona": "Contrarian SaaS Founder & Bootstrapper. Focuses on founder pain points, shipping velocity, building agency leverage, SaaS economics, and unbundling legacy tools.",
-        "target_audience": "Founders, indie hackers, agency owners, early-stage CTOs",
+        "name": "Demoly Official",
+        "persona": "Official Demoly.dev Brand Account. Deeply represents Demoly: the authentic backstory of founding agency Creative Pie (85+ client platforms built), the 35-60 walkthrough video handover bottleneck for an enterprise law firm client, why we created Demoly to turn passive videos into conversational AI that answers questions, how Demoly beats Loom (DOM vs audio transcript only) and Google Drive (100MB streaming limits), product updates, and interactive public links.",
+        "target_audience": "Tech founders, agency clients, dev teams, web studios, and product managers",
     },
     {
-        "name": "Tech / Engineer",
-        "persona": "Senior Full-Stack Engineer & AI Systems Architect. Focuses on browser internals, DOM state indexing vs lossy video transcripts, deterministic AI agents, and developer tooling efficiency.",
-        "target_audience": "Software engineers, frontend/fullstack developers, tech leads",
+        "name": "Tech Lead / Systems Engineer",
+        "persona": "Senior Full-Stack Engineer & AI Systems Architect. Focuses strictly on technical internals: browser DOM tree indexing vs lossy video pixel OCR, MCP (Model Context Protocol) servers for Cursor/Antigravity/Claude Code, AST parsing, reproducible visual bug reporting, deterministic AI agents, element-level privacy masking in the DOM, network call/console error recording, and frontend dev tooling efficiency.",
+        "target_audience": "Software engineers, frontend/fullstack developers, AI engineers, QA leads, and CTOs",
     },
     {
-        "name": "Agency Growth / Operations",
-        "persona": "Agency Operations Strategist & Client Experience Lead. Focuses on client communication bottlenecks, unpaid scope creep in handover videos, and scaling client delivery without hiring more support.",
-        "target_audience": "Digital agencies, dev shops, product managers, customer success leads",
-    },
-    {
-        "name": "Product & UX Engineer",
-        "persona": "Product Designer & UI/UX Engineer. Focuses on the death of confusing software walkthroughs, visual bug reporting, interactive element-level pinning, and zero-friction client experiences.",
-        "target_audience": "UI/UX designers, design engineers, frontend developers, product creators",
-    },
-    {
-        "name": "Indie Builder / Vibe Coder",
-        "persona": "Build-in-Public Solopreneur & Vibe Coder. Focuses on rapid prototyping with AI, testing workflows in public, raw developer experiments, and unfiltered takes on modern software culture.",
-        "target_audience": "Vibe coders, solopreneurs, indie hackers, developer community",
+        "name": "Agency Ops / SaaS Strategist",
+        "persona": "Agency Operations Strategist & Client Experience Lead. Focuses on client communication bottlenecks, eliminating unpaid post-launch scope creep, replacing 30-minute Google Meet walkthroughs with interactive videos, billable hours saved (2-4 hrs/week), scaling agency margins, smooth client onboarding, and seamless SaaS product handovers.",
+        "target_audience": "Digital agencies, dev shops, SaaS founders, freelance web developers, product managers, and client success leads",
     },
 ]
 
@@ -118,8 +108,10 @@ def get_configured_accounts() -> List[AccountConfig]:
                         target_audience=str(item.get("target_audience", "")).strip(),
                     )
                     for idx, item in enumerate(data)
-                    if item.get("id") or item.get("channel_id")
+                    if (item.get("id") or item.get("channel_id")) and not str(item.get("id") or item.get("channel_id", "")).startswith("YOUR_")
                 ]
+                if parsed_accounts:
+                    return parsed_accounts
         except Exception as e:
             print(f"[Warning] Failed to parse {ACCOUNTS_CONFIG_PATH}: {e}")
 
@@ -128,7 +120,7 @@ def get_configured_accounts() -> List[AccountConfig]:
         try:
             data = json.loads(ACCOUNTS_JSON_ENV)
             if isinstance(data, list) and data:
-                return [
+                parsed_accounts = [
                     AccountConfig(
                         id=str(item.get("id") or item.get("channel_id", "")).strip(),
                         name=str(item.get("name", f"Account #{idx+1}")).strip(),
@@ -136,8 +128,10 @@ def get_configured_accounts() -> List[AccountConfig]:
                         target_audience=str(item.get("target_audience", "")).strip(),
                     )
                     for idx, item in enumerate(data)
-                    if item.get("id") or item.get("channel_id")
+                    if (item.get("id") or item.get("channel_id")) and not str(item.get("id") or item.get("channel_id", "")).startswith("YOUR_")
                 ]
+                if parsed_accounts:
+                    return parsed_accounts
         except Exception as e:
             print(f"[Warning] Failed to parse ACCOUNTS_JSON env var: {e}")
 

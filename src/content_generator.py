@@ -55,8 +55,11 @@ def load_knowledge_base(path: Optional[Path] = None) -> str:
     return target_path.read_text(encoding="utf-8").strip()
 
 
-def load_recent_published_posts(limit: int = 8) -> str:
-    """Reads the last N posts from published_posts.csv to prevent repetition."""
+def load_recent_published_posts(limit: int = 30, current_account_name: Optional[str] = None) -> str:
+    """
+    Reads the last N posts from published_posts.csv to prevent repetition.
+    Differentiates between posts made by THIS account and OTHER accounts.
+    """
     if not PUBLISHED_CSV_PATH.exists():
         return "None yet (this is the first post)."
     try:
@@ -65,18 +68,42 @@ def load_recent_published_posts(limit: int = 8) -> str:
             rows = [r for r in reader if r.get("Content")]
         if not rows:
             return "None yet (this is the first post)."
+
         recent = rows[-limit:]
-        formatted = []
-        for idx, r in enumerate(recent, 1):
-            text_snippet = r.get("Content", "").replace(" || ", " ")[:160]
-            formatted.append(f"{idx}. [{r.get('Post Type', 'post')}] {text_snippet}...")
-        return "\n".join(formatted)
+        this_account_posts = []
+        other_account_posts = []
+
+        for r in recent:
+            acct = r.get("Account", "Default").strip()
+            text_snippet = r.get("Content", "").replace(" || ", " ")[:180].strip()
+            post_type = r.get("Post Type", "post")
+            entry = f"[{acct} | {post_type}]: \"{text_snippet}...\""
+            if current_account_name and acct.lower() == current_account_name.lower():
+                this_account_posts.append(entry)
+            else:
+                other_account_posts.append(entry)
+
+        sections = []
+        if this_account_posts:
+            sections.append(
+                f"=== POSTS PREVIOUSLY PUBLISHED BY THIS ACCOUNT ({current_account_name}) ===\n"
+                f"(STRICT RULE: Do not reuse these exact angles, hooks, or phrasing!)\n"
+                + "\n".join(f"{i}. {p}" for i, p in enumerate(this_account_posts, 1))
+            )
+        if other_account_posts:
+            heading = f"=== RECENT POSTS PUBLISHED BY OTHER ACCOUNTS ===" if current_account_name else "=== RECENTLY PUBLISHED POSTS (ALL ACCOUNTS) ==="
+            sections.append(
+                f"{heading}\n(STRICT RULE: Do not duplicate these topics across accounts!)\n"
+                + "\n".join(f"{i}. {p}" for i, p in enumerate(other_account_posts, 1))
+            )
+
+        return "\n\n".join(sections) if sections else "None yet."
     except Exception:
         return "None yet."
 
 
-def load_topic_inspiration(limit: int = 5) -> str:
-    """Randomly samples N topics from the 100-topic bank (data/topics_bank.json)."""
+def load_topic_inspiration(limit: int = 6, persona_name: Optional[str] = None) -> str:
+    """Samples N topics from the 100-topic bank (data/topics_bank.json) tailored to the persona."""
     if not TOPICS_BANK_PATH.exists():
         return ""
     try:
@@ -84,12 +111,39 @@ def load_topic_inspiration(limit: int = 5) -> str:
             topics = json.load(f)
         if not topics:
             return ""
-        sample_size = min(limit, len(topics))
-        chosen = random.sample(topics, sample_size)
+
+        filtered_topics = []
+        p_name = (persona_name or "").lower()
+
+        if any(k in p_name for k in ["official", "brand", "demoly"]):
+            # Official Demoly account: origin, problem, differentiators, positioning, sharing, vision
+            target_keywords = ["origin", "positioning", "differentiators", "sharing", "security", "vision"]
+            filtered_topics = [
+                t for t in topics
+                if any(kw in t.get("category", "").lower() for kw in target_keywords)
+            ]
+        elif any(k in p_name for k in ["tech", "engineer", "architect", "lead"]):
+            # Tech Lead account: DOM architecture, MCP, bug reporting, recording capabilities, masking
+            target_keywords = ["architecture", "mcp", "bug reporting", "recording capabilities", "editing", "trending"]
+            filtered_topics = [
+                t for t in topics
+                if any(kw in t.get("category", "").lower() for kw in target_keywords)
+            ]
+        elif any(k in p_name for k in ["agency", "saas", "strategist", "operations", "client"]):
+            # Agency/SaaS account: agency problem, workflows, pricing, admin, roadmap, operations
+            target_keywords = ["agency problem", "target personas", "pricing", "roadmap", "operations", "mechanics"]
+            filtered_topics = [
+                t for t in topics
+                if any(kw in t.get("category", "").lower() for kw in target_keywords)
+            ]
+
+        pool = filtered_topics if len(filtered_topics) >= limit else topics
+        sample_size = min(limit, len(pool))
+        chosen = random.sample(pool, sample_size)
         formatted = []
         for t in chosen:
             formatted.append(
-                f"- [Topic #{t.get('id', '?')} | {t.get('pillar', 'General')}]: {t.get('topic', '')}\n"
+                f"- [Topic #{t.get('id', '?')} | {t.get('category', t.get('pillar', 'General'))}]: {t.get('topic', '')}\n"
                 f"  Angle: {t.get('angle', '')}\n"
                 f"  Hook Idea: \"{t.get('hook_seed', '')}\""
             )
@@ -235,10 +289,51 @@ def generate_post(
         cached_hashtags: Pre-fetched trending hashtags to avoid duplicate network calls
         account: Target AccountConfig containing persona, voice, and audience details
     """
+def extract_hook_words(text: str) -> set:
+    """Extracts significant lowercase words from the first line (hook) of a post."""
+    first_line = text.split("\n")[0].lower()
+    words = re.findall(r"\b[a-z]{3,}\b", first_line)
+    stopwords = {"this", "that", "with", "from", "your", "what", "when", "here", "they", "have", "more", "most", "will", "about", "there", "their", "where"}
+    return {w for w in words if w not in stopwords}
+
+
+def is_duplicate_of_recent(first_tweet: str, past_posts: List[str], threshold: float = 0.60) -> bool:
+    """Checks whether the first tweet's hook significantly overlaps with recent published posts."""
+    new_words = extract_hook_words(first_tweet)
+    if len(new_words) < 3:
+        return False
+    for past in past_posts:
+        past_words = extract_hook_words(past)
+        if len(past_words) < 3:
+            continue
+        intersection = new_words & past_words
+        union = new_words | past_words
+        if union and (len(intersection) / len(union)) >= threshold:
+            return True
+    return False
+
+
+def generate_post(
+    content_type_preference: Optional[str] = None,
+    gemini_client: Optional[GeminiClient] = None,
+    preferred_media_filename: Optional[str] = None,
+    allow_media: Optional[bool] = None,
+    planned_focus_topic: Optional[str] = None,
+    planned_trend_connection: Optional[str] = None,
+    planned_rationale: Optional[str] = None,
+    cached_trends: Optional[str] = None,
+    cached_hashtags: Optional[str] = None,
+    account: Optional[AccountConfig] = None,
+) -> GeneratedPostModel:
+    """
+    Reads the style guide and generates either a single post or a thread.
+    Supports Demoly Official, Tech Lead, and Agency/SaaS account personas
+    with strict deduplication against recent history.
+    """
     style_guide = load_style_guide()
     knowledge_base = load_knowledge_base()
-    recent_posts = load_recent_published_posts(limit=6)
-    topic_inspiration = load_topic_inspiration(limit=5)
+    recent_posts = load_recent_published_posts(limit=30, current_account_name=account.name if account else None)
+    topic_inspiration = load_topic_inspiration(limit=6, persona_name=account.name if account else None)
     realtime_trends = cached_trends or get_realtime_trending_context()
     trending_hashtags = cached_hashtags or get_realtime_trending_hashtags()
 
@@ -280,7 +375,43 @@ def generate_post(
 
     # Inject account persona and tone instructions if specified
     if account:
-        formatted_prompt += f"\n\nACCOUNT VOICE & PERSONA INSTRUCTIONS:\n- Account: {account.name}\n- Persona / Tone: {account.persona or 'Tech builder & founder'}\n- Target Audience: {account.target_audience or 'Builders, developers, and founders'}\nMake sure your phrasing, hook style, and vocabulary reflect this unique persona."
+        p_name = account.name.lower()
+        role_specialization = ""
+        if any(k in p_name for k in ["official", "brand", "demoly"]):
+            role_specialization = (
+                "\nSPECIALIZED ROLE (OFFICIAL DEMOLY BRAND VOICE):\n"
+                "- Speak as Demoly's official voice, product team, and company mission.\n"
+                "- Tell Demoly's authentic backstory: how Creative Pie agency (delivering 85+ client platforms) ran into a massive 35-60 walkthrough video bottleneck for an enterprise law firm client.\n"
+                "- Explain why we created Demoly: because clients refuse to watch 10-minute videos for a 10-second button and kept asking for repeat Google Meet calls (2-4 hrs/week lost per developer).\n"
+                "- Highlight why Demoly is fundamentally better: Loom's audio-transcript-only search is blind to silent clicks and UI actions; Google Drive fails to stream videos >100MB in-browser; Demoly captures the live browser DOM tree and lets clients talk to the video via interactive public links.\n"
+                "- Share company philosophy, mission, product announcements, and customer transformations."
+            )
+        elif any(k in p_name for k in ["tech", "engineer", "architect", "lead"]):
+            role_specialization = (
+                "\nSPECIALIZED ROLE (TECH LEAD / DEEP SYSTEMS & AI ENGINEER):\n"
+                "- Speak as a Senior Full-Stack Engineer / AI Systems Architect talking to peers (developers, AI engineers, CTOs).\n"
+                "- Dive into technical internals: browser DOM tree indexing vs lossy pixel video OCR / transcripts.\n"
+                "- Focus on Model Context Protocol (MCP) server integration for Cursor, Claude Code, and Antigravity: feeding timestamped DOM snapshots, console errors, and network logs directly to AI agents.\n"
+                "- Focus on element-level DOM privacy masking (hiding Stripe keys / PII in the DOM layer non-destructively) and deterministic AI visual search on silent videos.\n"
+                "- Focus on developer velocity, reproducible visual QA bug reports, and modern frontend tooling."
+            )
+        elif any(k in p_name for k in ["agency", "saas", "strategist", "operations", "client"]):
+            role_specialization = (
+                "\nSPECIALIZED ROLE (AGENCY OPERATIONS & SAAS STRATEGIST):\n"
+                "- Speak as an agency operations lead and client success strategist talking to agency founders, dev shops, and SaaS creators.\n"
+                "- Focus on client handover bottlenecks, eliminating unpaid post-launch scope creep, and saving 2 to 4 billable hours every week per team member.\n"
+                "- Focus on replacing 30-minute Google Meet walkthroughs with interactive videos that answer questions autonomously, accelerating invoice sign-offs, and protecting agency profit margins.\n"
+                "- Focus on the death of 40-page software documentation manuals that no client ever reads."
+            )
+
+        formatted_prompt += (
+            f"\n\nACCOUNT VOICE & PERSONA INSTRUCTIONS:\n"
+            f"- Account: {account.name}\n"
+            f"- Persona / Tone: {account.persona or 'Tech builder & founder'}\n"
+            f"- Target Audience: {account.target_audience or 'Builders, developers, and founders'}"
+            f"{role_specialization}\n"
+            f"Make sure your phrasing, hook style, and vocabulary reflect this unique persona."
+        )
 
     # Inject planned strategic topic if specified by the daily planner
     if planned_focus_topic:
@@ -299,6 +430,30 @@ def generate_post(
 
     # Validate output
     validated = validate_generated_content(raw_content)
+
+    # Load recent history for anti-repetition check
+    recent_raw_contents = []
+    if PUBLISHED_CSV_PATH.exists():
+        try:
+            with open(PUBLISHED_CSV_PATH, mode="r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                recent_raw_contents = [r.get("Content", "") for r in reader if r.get("Content")][-30:]
+        except Exception:
+            pass
+
+    # If first tweet overlaps with recent history, request one quick regeneration with explicit dedup warning
+    if validated.posts and is_duplicate_of_recent(validated.posts[0], recent_raw_contents, threshold=0.55):
+        print(f"[Deduplication] Detected hook similarity with past post. Regenerating with fresh angle...")
+        retry_prompt = (
+            formatted_prompt
+            + f"\n\nSTRICT DEDUPLICATION WARNING: The hook '{validated.posts[0][:70]}...' is too similar to a past post! "
+            f"Generate a COMPLETELY NEW, DIFFERENT hook and angle."
+        )
+        try:
+            retry_raw = client.generate_content(retry_prompt)
+            validated = validate_generated_content(retry_raw)
+        except Exception as retry_err:
+            print(f"[Deduplication] Retry warning: {retry_err}, keeping original.")
 
     # Resolve media URL if media was selected
     if preferred_media_filename:
