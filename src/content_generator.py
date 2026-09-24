@@ -455,6 +455,29 @@ def generate_post(
         except Exception as retry_err:
             print(f"[Deduplication] Retry warning: {retry_err}, keeping original.")
 
+    # Hard validation: every post MUST mention "Demoly" by name
+    all_text = " ".join(validated.posts)
+    if "demoly" not in all_text.lower():
+        print(f"[Brand Check] Post missing 'Demoly' name. Regenerating with brand enforcement...")
+        brand_retry_prompt = (
+            formatted_prompt
+            + "\n\n⚠️ CRITICAL BRAND RULE VIOLATION: Your previous response did NOT mention 'Demoly' by name anywhere! "
+            "This is UNACCEPTABLE. You MUST explicitly name 'Demoly' at least once in the post. "
+            "Do NOT write generic advice without attributing the solution to Demoly. "
+            "Example fix: Instead of 'Record once. Let AI handle the questions.' write "
+            "'Demoly lets you record once and have AI answer client questions from the video instantly.'"
+        )
+        try:
+            brand_retry_raw = client.generate_content(brand_retry_prompt)
+            brand_validated = validate_generated_content(brand_retry_raw)
+            if "demoly" in " ".join(brand_validated.posts).lower():
+                validated = brand_validated
+                print(f"[Brand Check] ✅ Regenerated post now includes 'Demoly'.")
+            else:
+                print(f"[Brand Check] ⚠️ Retry still missing Demoly name. Keeping best version.")
+        except Exception as brand_err:
+            print(f"[Brand Check] Retry error: {brand_err}, keeping original.")
+
     # Resolve media URL if media was selected
     if preferred_media_filename:
         validated.media_filename = preferred_media_filename
