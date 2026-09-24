@@ -22,7 +22,6 @@ on:
           - daily-batch
           - thread
           - single
-          - random
       live:
         description: 'Publish live to X? (Uncheck for safe dry-run preview)'
         required: false
@@ -72,7 +71,7 @@ jobs:
             elif [ "${{ inputs.force_type }}" = "daily-batch" ]; then
               CMD_ARGS="--daily-batch --spaced"
             else
-              CMD_ARGS=""
+              CMD_ARGS="--daily-batch --spaced"
             fi
             if [ "${{ inputs.live }}" = "false" ]; then
               CMD_ARGS="$CMD_ARGS --dry-run"

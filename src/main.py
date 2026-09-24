@@ -168,7 +168,12 @@ def run_pipeline(
 
     # LIVE PUBLISHING PATH
     print("\n[Step 2/3] Publishing to Buffer...")
-    buffer_client = BufferClient()
+
+    # Resolve channel_id: prefer first configured account, fallback to env BUFFER_CHANNEL_ID
+    accounts = get_configured_accounts()
+    resolved_channel_id = accounts[0].id if accounts and accounts[0].id else None
+    buffer_client = BufferClient(channel_id=resolved_channel_id)
+
 
     # Determine publishing mode & custom schedule
     mode = "addToQueue"
