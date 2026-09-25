@@ -149,3 +149,66 @@ Demoly mounts directly as an MCP server, streaming structured DOM trees, network
 Record once. Let AI handle the questions.
 
 #agency #webdev #smb",6ab4f6926396ba3b0ccec8f8,sent (2026-09-24T10:08:18.686Z),none,Sourabh - Agency Ops Strategist (@scalebysourabh)
+2026-09-25 09:06:52 UTC,single,"Google Drive cannot stream client walkthrough videos larger than 100MB directly in the browser.
+
+Your clients are forced to download massive files locally just to view a single feature.
+
+Demoly streams instant browser recordings with zero size limits.
+
+#saas #webdev || null",6ab639abcbe818dd4f005524,sent (2026-09-26T04:30:00.000Z),none,Demoly Official (@Demolyy4ls)
+2026-09-25 09:06:55 UTC,thread,"When we delivered an enterprise platform for a major law firm at our agency Creative Pie, we had to record 45 different client handover walkthroughs.
+
+We thought we were being thorough.
+
+Instead, we triggered an operational nightmare. || Our clients refused to sit through 10-minute video files to find a 10-second button. 
+
+They didn't know which video held which feature, so they repeatedly booked 15 to 30-minute Google Meet calls for answers we had already recorded. || Every single week, our developers lost 2 to 4 billable hours per team member answering identical, repetitive questions.
+
+Passive handover recordings were dead weight. They couldn't actively help the client. || That exact agency frustration is why we built Demoly.
+
+Demoly records the browser DOM alongside your screen. Clients open a clean public link and talk directly to the video via conversational AI. || Instead of scheduling a meeting or scrubbing through an MP4, Demoly’s AI searches the visual DOM and jumps straight to the exact second the answer appears.
+
+Stop working for free on post-launch support.
+
+#AI #webdev #buildinpublic",6ab639af4be5473030ac23d5,sent (2026-09-25T13:00:00.000Z),none,Demoly Official (@Demolyy4ls)
+2026-09-25 09:07:03 UTC,single,"Most screen recorders only search what you spoke out loud on mic. If you clicked a button silently, their AI is completely blind.
+
+Demoly indexes the live browser DOM so your clients can search any UI action and jump straight to it.
+
+#AI #developertools",6ab639b7db73444101e7910a,sent (2026-09-25T17:00:00.000Z),Demoly Tutorial #6_ How to Use AI Search _ Find Anything in Your Recordings.mp4,Demoly Official (@Demolyy4ls)
+2026-09-25 09:07:11 UTC,single,"Why install a bloated 200MB desktop app when a lightweight Chrome extension has native runtime access to the browser DOM, tab audio, and web events?
+
+Demoly leverages extension APIs to index clean UI hierarchy instantly without OS bloat.
+
+#developertools",6ab639bfa14029bcc72a1a81,sent (2026-09-26T04:30:00.000Z),none,Manish - Tech Lead (@ManishBulchand9)
+2026-09-25 09:07:14 UTC,thread,"Feeding frontend bug reports to Cursor or Claude Code as flat screenshots is an architectural dead end. Your AI agent receives zero DOM context, zero layout state, and zero network payloads. || When a QA engineer reports a UI defect with a static image, the AI has to guess the component tree, DOM hierarchy, and failing event listeners. That workflow is fundamentally broken. || Demoly solves this by mounting as a Model Context Protocol (MCP) server directly inside your AI coding environment. It streams structured DOM trees, console logs, and network errors straight to your agent. || Instead of manually transcribing bug details, your AI coding assistant ingests the exact DOM snapshot and timestamped video proof to diagnose and patch frontend bugs instantly. || How are your QA teams currently passing diagnostic state to your AI coding agents?
+
+#AI #coding",6ab639c2a14029bcc72a1b06,sent (2026-09-25T13:00:00.000Z),none,Manish - Tech Lead (@ManishBulchand9)
+2026-09-25 09:07:19 UTC,single,"Sending developers flat screenshots for frontend bugs is an architectural dead end.
+
+Demoly provides frame-by-frame DOM element commenting so you can pin context straight to the exact UI node.
+
+#AI #webdev || img16.png",6ab639c7db73444101e79398,sent (2026-09-25T17:00:00.000Z),img16.png,Manish - Tech Lead (@ManishBulchand9)
+2026-09-25 09:07:27 UTC,single,"Scattered Slack threads and endless email chains are where agency client handovers go to die.
+
+Centralize your walkthroughs into clean project folders with Demoly so clients find every answer instantly.
+
+#saas #developertools #business",6ab639cfa14029bcc72a1be1,sent (2026-09-26T04:30:00.000Z),none,Sourabh - Agency Ops Strategist (@scalebysourabh)
+2026-09-25 09:07:31 UTC,thread,"Unpaid post-launch scope creep starts when client handovers are scattered across unorganized video links, Slack threads, and forgotten Google Drive folders.
+
+Here is how agency ops teams protect gross margins using Demoly: || When your PMs, developers, and QA engineers work in fragmented silos, clients default to scheduling 30-minute Google Meet calls for answers already covered in recordings.
+
+Demoly centralizes entire projects into clean client workspaces. || Instead of juggling loose files, you give clients a dedicated project folder where every walkthrough, module, and admin setting lives in one searchable hub.
+
+Demoly lets clients query the video library directly to find answers instantly. || By adding your team as Pro editors and restricting clients to secure Viewer roles, you maintain absolute control over what is seen while eliminating repetitive support overhead.
+
+Demoly turns client handovers into an automated asset. || How does your agency currently handle client handover questions after a web app launch?
+
+#automation #smb #buildinpublic",6ab639d3cbe818dd4f005938,sent (2026-09-25T13:00:00.000Z),none,Sourabh - Agency Ops Strategist (@scalebysourabh)
+2026-09-25 09:07:35 UTC,single,"Sending clients loose video links and cluttered folders destroys agency productivity.
+
+Demoly organizes client handovers into clean workspaces with instant privacy controls and project folders.
+
+Keep deliverables structured and professional.
+
+#agency #webdev #saas || img18.png",6ab639d74be5473030ac2743,sent (2026-09-25T17:00:00.000Z),img18.png,Sourabh - Agency Ops Strategist (@scalebysourabh)
