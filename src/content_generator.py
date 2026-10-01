@@ -422,6 +422,8 @@ def validate_generated_content(
                     if len(last_p) + len(" @Demolyy4ls") <= 280:
                         clean_posts[-1] = f"{last_p} @Demolyy4ls"
 
+    if len(clean_posts) == 1:
+        content.type = "single"
     content.posts = clean_posts
     return content
 

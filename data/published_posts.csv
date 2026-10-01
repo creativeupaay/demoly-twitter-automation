@@ -977,3 +977,10 @@ Stop dumping 10-minute videos. Use Demoly so your clients can search the video d
 2026-10-01 11:38:27 UTC,Default,thread,"we almost lost a $40K client because they couldn't find the logout button. true story. || our team spent three weeks building a custom enterprise workspace. we thought the hardest part was writing the backend logic. || turns out the hardest part was dealing with the client calling us at 9 PM asking where the settings tab went. || we dumped 30 walkthrough videos into a cloud folder. the client refused to watch them. they just booked 15-minute Google Meets instead. || that operational drain is why we built Demoly. now clients search videos directly and get timestamped answers instantly. || stop trading your engineering hours for basic Q&A calls. 
 
 #webdev #SaaS #AI",6abe462fa017fc62b5e46ccf,sent (2026-10-01T11:38:23.905Z),none
+2026-10-01 11:54:34 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"Sending an AI coding agent a cropped screenshot of a frontend bug is an architectural dead end.
+
+Your LLM gets zero telemetry, zero layout state, and zero console logs.
+
+We connected @Demolyy4ls to an MCP server so your agent inspects exact DOM failure states automatically.
+
+#AI",DRY_RUN_NO_ID,DRY_RUN,https://files.catbox.moe/6hx9sl.jpg
