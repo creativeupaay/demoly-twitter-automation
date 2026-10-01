@@ -78,43 +78,55 @@ def generate_pollinations_image(
     slug: str = "visual",
     width: int = 1200,
     height: int = 675,
-    model: str = "flux",
+    model: str = "flux-schnell",
 ) -> Optional[str]:
     """
-    Generates a 100% free high-resolution image using Pollinations AI (Flux / SDXL).
+    Generates a 100% free high-resolution image using Pollinations AI.
+    Uses flux-schnell (free, no auth) with turbo fallback.
     No API key or payment required.
     """
-    try:
-        print(f"[Pollinations AI] Generating image via {model} model...")
-        encoded_prompt = urllib.parse.quote(prompt.strip())
-        url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width={width}&height={height}&nologo=true&model={model}&seed={int(time.time())}"
+    # Free models in order of preference (flux-schnell is the free tier)
+    free_models = [model, "flux-schnell", "turbo", "flux"]
+    seen = set()
+    ordered_models = [m for m in free_models if not (m in seen or seen.add(m))]
 
-        req = urllib.request.Request(
-            url,
-            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
-        )
+    timestamp = int(time.time())
+    clean_slug = re.sub(r"[^a-z0-9]+", "_", slug.lower())[:30].strip("_")
+    filename = f"{timestamp}_flux_{clean_slug}.jpg"
+    save_path = GENERATED_IMAGES_DIR / filename
+    encoded_prompt = urllib.parse.quote(prompt.strip())
 
-        timestamp = int(time.time())
-        clean_slug = re.sub(r"[^a-z0-9]+", "_", slug.lower())[:30].strip("_")
-        filename = f"{timestamp}_flux_{clean_slug}.jpg"
-        save_path = GENERATED_IMAGES_DIR / filename
+    for attempt_model in ordered_models:
+        try:
+            print(f"[Pollinations AI] Trying model: {attempt_model}...")
+            url = (
+                f"https://image.pollinations.ai/prompt/{encoded_prompt}"
+                f"?width={width}&height={height}&nologo=true"
+                f"&model={attempt_model}&seed={int(time.time())}"
+            )
+            req = urllib.request.Request(
+                url,
+                headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+            )
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                content = resp.read()
+                if len(content) > 5000:
+                    save_path.write_bytes(content)
+                    print(f"[Pollinations AI] ✅ Saved: {save_path.name} ({len(content):,} bytes) via {attempt_model}")
+                    return _upload_to_cdn(save_path) or str(save_path)
+                else:
+                    print(f"[Pollinations AI] Model {attempt_model}: response too small ({len(content)} bytes), trying next...")
+        except Exception as e:
+            print(f"[Pollinations AI] Model {attempt_model} failed: {e}. Trying next...")
 
-        with urllib.request.urlopen(req, timeout=45) as resp:
-            content = resp.read()
-            if len(content) > 5000:
-                save_path.write_bytes(content)
-                print(f"[Pollinations AI] Successfully saved: {save_path.name} ({len(content)} bytes)")
-                return _upload_to_cdn(save_path) or str(save_path)
-            else:
-                print(f"[Pollinations AI Warning] Image content too small ({len(content)} bytes)")
-    except Exception as e:
-        print(f"[Pollinations AI Warning] Generation failed: {e}")
+    print("[Pollinations AI Warning] All models exhausted.")
     return None
 
 
 def generate_conceptual_image_for_post(post_text: str, focus_topic: str) -> Optional[str]:
     """
-    Uses Gemini to craft a tailored Flux/Midjourney visual prompt for Demoly concepts.
+    Uses Gemini to craft a tailored visual prompt then generates via Pollinations free tier.
+    Falls back to viral quote card if generation fails.
     """
     try:
         from src.gemini_client import GeminiClient
@@ -135,7 +147,14 @@ Return ONLY the raw visual prompt text (under 60 words). No commentary."""
         visual_prompt = gemini.generate_raw_text(prompt).strip()
         visual_prompt = re.sub(r"^[\"']|[\"']$", "", visual_prompt).strip()
         print(f"[Image Generator] Crafting visual with prompt: {visual_prompt[:90]}...")
-        return generate_pollinations_image(prompt=visual_prompt, slug=focus_topic, model="flux")
+        # Use flux-schnell (free tier) first
+        result = generate_pollinations_image(prompt=visual_prompt, slug=focus_topic, model="flux-schnell")
+        if result:
+            return result
+        # Pillow quote card as backup
+        print("[Image Generator] Pollinations failed, generating quote card instead...")
+        first_line = (post_text or focus_topic).split("\n")[0][:100]
+        return generate_viral_quote_card(first_line, author_name="Demoly", handle="@Demolyy4ls", slug=focus_topic)
     except Exception as e:
         print(f"[Image Generator Warning] Conceptual image prompt creation failed: {e}")
         return None
