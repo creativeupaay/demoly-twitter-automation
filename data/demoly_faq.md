@@ -16,7 +16,7 @@ A comprehensive, categorized FAQ knowledge base compiled from founder interviews
 ---
 ## Category 1: Company Origin, Problem & Founder Insights
 ### Q1: What is the origin story of Demoly and what specific problem triggered its creation?
-**A:** Demoly was created by the co-founders of **Creative Pie**, a tech agency that has delivered web applications and AI-native products for over 85 global clients. While delivering complex platforms (notably a large enterprise web application for a law firm requiring 35–60 handover walkthrough videos), a severe operational bottleneck occurred.
+**A:** Demoly was created by the co-founders of **Creative Upaay**, a tech agency that has delivered web applications and AI-native products for over 85 global clients. While delivering complex platforms (notably a large enterprise web application for a law firm requiring 35–60 handover walkthrough videos), a severe operational bottleneck occurred.
 Clients and their staff would not watch 10-minute videos to find a single answer, nor did they know which video contained a specific feature. Consequently, clients repeatedly requested live Google Meet calls to ask questions about features already explained in the videos. Each call consumed 15–30 minutes, totaling **2 to 4 hours per team member each week** answering repetitive queries. This friction led the founders to conclude that handover recordings should not just be passive videos—they must actively answer client questions.
 
 ### Q2: How did the agency handle handovers and bug reports before building Demoly?

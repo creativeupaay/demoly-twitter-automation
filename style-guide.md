@@ -72,14 +72,56 @@ Instead of following a rigid day-of-the-week schedule or locking sources to rigi
 
 ---
 
-## 6. High-Converting Hook Formats (Swipe File)
+## 6. High-Converting Hook Formats (Top Tech Founder Swipe File)
 
-- **The Anti-Meeting Hook**: *"Today, we're killing the 'can we quickly jump on a call?' message. No more 30-minute meetings explaining a feature you already recorded."*
-- **The Tool Contrast**: *"Loom searches your words. Demoly searches your screen. If you never spoke on camera, Loom can't find the button. Here is why that matters:"*
-- **The Founder Frustration**: *"We delivered 45 walkthrough videos for an enterprise client. Within a week, we lost 15 hours to repeat calls asking questions already in the recordings. That is why we built Demoly."*
-- **The Hidden Cost**: *"Tech agencies lose 2 to 4 hours per team member every week answering questions already explained in client handover videos. Here is why:"*
-- **The Contrarian Reality**: *"Everyone is talking about 'vibe coding' a SaaS in 2 hours. But nobody mentions: you can't vibe-explain a web app to a non-technical client."*
-- **The Architecture Truth**: *"A screen recorder that refuses to record your desktop OS is not broken—it's by design. Here is the engineering decision behind Demoly:"*
+Adopt the conversational, authentic, story-first style used by top viral tech builders (Tanay Kothari @tankots, Guillaume Bardet @GuillaumeBardet, Sankalp Sinha @sankalpdxd):
+
+1. **The $ Metric / Revenue & Margin Hack** (Reference: Guillaume Bardet):
+   *"We added $12K to our agency margin by stopping one common mistake in client handovers.*
+   *Every repeat meeting. Every 'where is this button?' Slack ping.*
+   *Those are profit leaks hiding in plain sight.*
+   *Here is the exact setup we switched to with Demoly:"*
+
+2. **The "Spent 48 Hours Straight Building" Sprint** (Reference: Sankalp Sinha):
+   *"Spent 48 hours straight building Demoly's new interactive search.*
+   *There's so much hype around async video, but if you dig deeper into Loom/Drive, it's mostly unsearchable pixel slop.*
+   *Decided to fix it. Instant visual timestamp search only."*
+
+3. **The "Done ✅" Cheat Code Checklist** (Reference: Guillaume Bardet):
+   *"You can eliminate 90% of client support calls:*
+   *- Record browser walkthrough silently*
+   *- Redact sensitive Stripe keys in 1 click*
+   *- Share a public interactive Demoly link*
+   *- Let clients query the video directly*
+   *Done ✅"*
+
+4. **The "Everything You Need to Know" Blueprint** (Reference: Tanay Kothari):
+   *"this is everything you need to know to eliminate client meeting fatigue from zero:*
+   *here is the exact framework:*
+   *1. record visual steps silently without voiceover*
+   *2. let AI index every button and input*
+   *3. share 1 public interactive link*
+   *4. eliminate 30-min Google Meet calls forever"*
+
+5. **The High-Stakes Story / Team Delegation** (Reference: Tanay Kothari):
+   *"a 22 year old junior dev handled our entire client handover for a $40k enterprise platform. it sounds insane, but it saved our agency 18 hours of meetings in week one."*
+   *"one day i pulled our team aside and told them we're banning 30-minute status calls. we replaced them with Demoly links that answer client questions autonomously."*
+
+6. **The Unfiltered Anti-Hype Callout** (Reference: Sankalp Sinha):
+   *"Most advice about client onboarding is pure theory from people who never delivered software for real clients.*
+   *If your handover forces clients to download 100MB MP4 files, you're doing it wrong.*
+   *Here is what actual high-margin agencies do:"*
+
+7. **The Operating Trade-Off / Mental Model** (Reference: Tanay Kothari):
+   *"There's always a trade-off in client delivery between speed, documentation, and dev time. The way we run this is:*
+   *Client clarity comes first*
+   *Developer focus comes second*
+   *Long documentation manuals come dead last*
+   *If a handover requires scheduling a meeting to explain a button, the workflow failed."*
+
+8. **The Core Beliefs & Real-World Friction** (Reference: Tanay Kothari):
+   *"We have a few core beliefs at Demoly that guide everything we build.*
+   *One of them is that client handovers should work wherever your clients are. That means answering their questions at 11 PM on mobile, in a busy airport, or between board meetings without scheduling a call."*
 
 ---
 
@@ -95,3 +137,17 @@ Instead of following a rigid day-of-the-week schedule or locking sources to rigi
   *"Unpopular opinion: If a developer needs more than 60 seconds to reproduce a staging bug, the QA workflow is fundamentally broken."*
 - **The "Honest Question" Metric**:
   *"Be honest: how many billable hours did your agency lose this week to meetings that could have been an interactive 2-minute recording?"*
+
+---
+
+## 8. Cross-Account Tagging & Synergy
+
+To maximize brand discovery and funnel technical and operational audiences into Demoly's primary funnel:
+1. **Manish - Tech Lead (`@ManishBulchand9`)**:
+   - Organically tags `@Demolyy4ls` when discussing architecture, MCP servers, visual telemetry, and engineering solutions.
+   - Example CTA: *"We shipped this exact workflow inside @Demolyy4ls — test it out if you hate meeting tax."*
+2. **Sourabh - Agency Ops (`@scalebysourabh`)**:
+   - Organically tags `@Demolyy4ls` when discussing agency margins, eliminating scope creep, and seamless client onboarding.
+   - Example CTA: *"We replaced all 30-min status calls with interactive links via @Demolyy4ls."*
+3. **Demoly Official (`@Demolyy4ls`)**:
+   - Never tags `@Demolyy4ls` (prevents awkward self-tagging).

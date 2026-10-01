@@ -27,6 +27,10 @@ if sys.platform == "win32":
     except Exception:
         pass
 
+# Ensure project root is in sys.path when running python src/main.py directly
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.config import (
     DRY_RUN,
@@ -83,12 +87,7 @@ def log_published_post(
         writer = csv.writer(f)
         if not file_exists:
             writer.writerow(["Timestamp", "Account", "Post Type", "Content", "Buffer ID", "Status", "Media"])
-            writer.writerow([timestamp, acct, post_type, combined_content, buffer_id, status, media_info])
-        elif has_account_header:
-            writer.writerow([timestamp, acct, post_type, combined_content, buffer_id, status, media_info])
-        else:
-            # Append Account as an extra trailing column if existing CSV had old format
-            writer.writerow([timestamp, post_type, combined_content, buffer_id, status, media_info, acct])
+        writer.writerow([timestamp, acct, post_type, combined_content, buffer_id, status, media_info])
 
     print(f"[Audit Log] Recorded to {target_path.name} (Account: {acct}, Status: {status})")
 
@@ -304,8 +303,9 @@ def run_daily_batch(
     realtime_trends = get_realtime_trending_context()
     trending_hashtags = get_realtime_trending_hashtags()
 
-    # Shared list of used topics across accounts in this batch to guarantee ZERO overlap
+    # Shared list of used topics and media across accounts in this batch to guarantee ZERO overlap
     all_used_topics: List[str] = []
+    all_used_media: List[str] = []
 
     for a_idx, account in enumerate(accounts, 1):
         print("\n" + "#" * 65)
@@ -316,10 +316,11 @@ def run_daily_batch(
             print(f" Target Audience: {account.target_audience}")
         print("#" * 65)
 
-        # 1. Plan today's posts with cross-account topic deduplication
+        # 1. Plan today's posts with cross-account topic & media deduplication
         plan: DailyCadencePlan = plan_daily_cadence(
             account=account if len(accounts) > 1 or account.persona else None,
             batch_excluded_topics=all_used_topics if all_used_topics else None,
+            batch_excluded_media=all_used_media if all_used_media else None,
         )
 
         # Filter plan to only the requested type when force_type is set
@@ -330,9 +331,11 @@ def run_daily_batch(
                 plan.items = plan.items[:1] if plan.items else [plan.items[0]]
                 plan.items[0].format = force_type
 
-        # Register topics so no other account in this run will repeat them
+        # Register topics and media so no other account in this run will repeat them
         for it in plan.items:
             all_used_topics.append(it.focus_topic)
+            if it.preferred_media:
+                all_used_media.append(it.preferred_media)
 
         print("\n" + "-" * 60)
         print(f" CADENCE PLAN FOR {account.name.upper()}:")

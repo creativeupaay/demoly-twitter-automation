@@ -1,21 +1,26 @@
 """
 image_generator.py
 ================================================================================
-AI Image & Graphic Generation for Demoly.dev X (Twitter) Automation.
+100% FREE AI Image & Visual Graphic Generation for Demoly.dev X Automation.
 
-100% Free, Keyless, Self-Contained Visual Generation:
+Zero API Keys, Zero Subscriptions, Zero Charges.
 
-  1. MEME PROMOTION GENERATOR (For Trending Topics & Dev Culture)
-     - Automatically triggered when a post references a trending topic or dev pain.
-     - Gemini crafts a punchy setup (pain point) and punchline (Demoly solution).
-     - Renders standard viral meme formats (Drake, etc.) with demoly.dev branding.
+Visual Modalities Provided:
+  1. POLLINATIONS AI (Flux / SDXL Text-to-Image)
+     - Gemini creates an ultra-sleek, aesthetic 3D/cyber visual prompt.
+     - Fetches 1200x675 high-res visuals from Pollinations.ai (100% free, no auth).
 
-  2. WORKFLOW COMPARISON INFOGRAPHIC (For Technical & Product Posts)
-     - Renders a high-contrast dark-mode Before vs After matrix.
-     - "Without Demoly" (friction points) vs "With Demoly.dev" (solutions).
-     - Never duplicates the tweet text.
+  2. VIRAL QUOTE / HOOK VISUAL CARD (Pillow Dark Mode)
+     - High-engagement tweet/insight card with gradient border, profile avatar,
+       verified badge, bold typography, and Demoly watermark.
 
-All generated assets are saved to assets/generated/ and uploaded to CDN for Buffer ingest.
+  3. WORKFLOW COMPARISON INFOGRAPHIC (Before vs After Matrix)
+     - High-contrast Before ("Without Demoly") vs After ("With Demoly.dev").
+
+  4. VIRAL DEVELOPER MEME GENERATOR
+     - Drake Hotline Bling and developer culture memes with Demoly promotion.
+
+All generated assets are saved to assets/generated/ and uploaded to Catbox CDN for Buffer ingest.
 ================================================================================
 """
 
@@ -23,11 +28,13 @@ import os
 import re
 import json
 import time
+import urllib.parse
+import urllib.request
 import textwrap
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 
-from src.config import GENERATED_IMAGES_DIR
+from src.config import GENERATED_IMAGES_DIR, AccountConfig
 
 # Ensure generated images and templates directories exist
 GENERATED_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
@@ -63,16 +70,305 @@ def _upload_to_cdn(file_path: Path) -> Optional[str]:
 
 
 # ---------------------------------------------------------------------------
-# Provider 1: Trending Meme Generator (Drake & Viral Templates)
+# Provider 1: Pollinations AI (100% Free Text-to-Image with Flux/SDXL)
 # ---------------------------------------------------------------------------
 
-def generate_drake_meme(top_text: str, bottom_text: str, slug: str) -> Optional[str]:
+def generate_pollinations_image(
+    prompt: str,
+    slug: str = "visual",
+    width: int = 1200,
+    height: int = 675,
+    model: str = "flux",
+) -> Optional[str]:
     """
-    Renders a standard Drake Hotline Bling meme with custom captions and demoly.dev branding.
+    Generates a 100% free high-resolution image using Pollinations AI (Flux / SDXL).
+    No API key or payment required.
+    """
+    try:
+        print(f"[Pollinations AI] Generating image via {model} model...")
+        encoded_prompt = urllib.parse.quote(prompt.strip())
+        url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width={width}&height={height}&nologo=true&model={model}&seed={int(time.time())}"
+
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        )
+
+        timestamp = int(time.time())
+        clean_slug = re.sub(r"[^a-z0-9]+", "_", slug.lower())[:30].strip("_")
+        filename = f"{timestamp}_flux_{clean_slug}.jpg"
+        save_path = GENERATED_IMAGES_DIR / filename
+
+        with urllib.request.urlopen(req, timeout=45) as resp:
+            content = resp.read()
+            if len(content) > 5000:
+                save_path.write_bytes(content)
+                print(f"[Pollinations AI] Successfully saved: {save_path.name} ({len(content)} bytes)")
+                return _upload_to_cdn(save_path) or str(save_path)
+            else:
+                print(f"[Pollinations AI Warning] Image content too small ({len(content)} bytes)")
+    except Exception as e:
+        print(f"[Pollinations AI Warning] Generation failed: {e}")
+    return None
+
+
+def generate_conceptual_image_for_post(post_text: str, focus_topic: str) -> Optional[str]:
+    """
+    Uses Gemini to craft a tailored Flux/Midjourney visual prompt for Demoly concepts.
+    """
+    try:
+        from src.gemini_client import GeminiClient
+        gemini = GeminiClient()
+        prompt = f"""You are an elite 3D visual artist and art director for Demoly (a modern SaaS platform for AI screen recording, interactive client handovers, and developer visual bug reporting).
+
+Create an ultra-detailed, aesthetic text-to-image prompt for the topic: "{focus_topic}".
+Context from post: "{post_text[:140]}"
+
+Style Rules:
+- Modern dark mode aesthetic, deep violet #7C3AED and electric indigo accents, clean neon lighting.
+- Futuristic 3D isometric browser interface, glowing telemetry nodes, elegant glassmorphism, hyper-clean minimal composition.
+- Cinematic lighting, octane render, 8k resolution, photorealistic, Behance trending UI, highly polished tech product.
+- DO NOT include garbled text or ugly watermarks. Focus on 3D UI cards, visual streams, AI chat bubbles, and interactive workflows.
+
+Return ONLY the raw visual prompt text (under 60 words). No commentary."""
+
+        visual_prompt = gemini.generate_raw_text(prompt).strip()
+        visual_prompt = re.sub(r"^[\"']|[\"']$", "", visual_prompt).strip()
+        print(f"[Image Generator] Crafting visual with prompt: {visual_prompt[:90]}...")
+        return generate_pollinations_image(prompt=visual_prompt, slug=focus_topic, model="flux")
+    except Exception as e:
+        print(f"[Image Generator Warning] Conceptual image prompt creation failed: {e}")
+        return None
+
+
+# ---------------------------------------------------------------------------
+# Provider 2: Viral Quote / Hook Visual Card
+# ---------------------------------------------------------------------------
+
+def generate_viral_quote_card(
+    hook_text: str,
+    author_name: str = "Demoly",
+    handle: str = "@Demolyy4ls",
+    slug: str = "quote",
+) -> Optional[str]:
+    """
+    Renders a high-engagement dark-mode visual card featuring a bold statement/hook.
     """
     try:
         from PIL import Image, ImageDraw, ImageFont
 
+        W, H = 1200, 675
+        img = Image.new("RGB", (W, H), color="#080C16")
+        draw = ImageDraw.Draw(img)
+
+        # Ambient gradient glow
+        for r in range(140, 0, -8):
+            alpha = int(18 * (r / 140))
+            draw.ellipse([W - 380 - r, -100 - r, W + 120 + r, 280 + r], outline=(124, 58, 237, alpha))
+            draw.ellipse([-100 - r, H - 280 - r, 300 + r, H + 100 + r], outline=(99, 102, 241, alpha))
+
+        # Main Card with subtle border
+        draw.rounded_rectangle([70, 60, W - 70, H - 60], radius=28, fill="#0F172A", outline="#1E293B", width=2)
+
+        # Fonts
+        font_path_b = "C:\\Windows\\Fonts\\segoeuib.ttf" if os.path.exists("C:\\Windows\\Fonts\\segoeuib.ttf") else "arialbd.ttf"
+        font_path_r = "C:\\Windows\\Fonts\\segoeui.ttf" if os.path.exists("C:\\Windows\\Fonts\\segoeui.ttf") else "arial.ttf"
+
+        try:
+            font_name = ImageFont.truetype(font_path_b, 26)
+            font_handle = ImageFont.truetype(font_path_r, 20)
+            font_quote = ImageFont.truetype(font_path_b, 34)
+            font_badge = ImageFont.truetype(font_path_b, 16)
+            font_footer = ImageFont.truetype(font_path_b, 18)
+        except Exception:
+            font_name = font_handle = font_quote = font_badge = font_footer = ImageFont.load_default()
+
+        # Author Badge Header
+        draw.ellipse([120, 110, 176, 166], fill="#7C3AED")
+        draw.text((138, 122), "D", font=font_name, fill="#FFFFFF")
+
+        draw.text((195, 115), author_name, font=font_name, fill="#F8FAFC")
+        draw.text((195, 146), handle, font=font_handle, fill="#64748B")
+
+        # Verified tick
+        draw.rounded_rectangle([195 + len(author_name) * 16 + 10, 118, 195 + len(author_name) * 16 + 32, 140], radius=11, fill="#38BDF8")
+        draw.text((195 + len(author_name) * 16 + 16, 120), "v", font=font_badge, fill="#0F172A")
+
+        # Top Pill Tag
+        draw.rounded_rectangle([W - 320, 115, W - 120, 155], radius=10, fill="#1E1B4B", outline="#4338CA")
+        draw.text((W - 300, 124), "FOUNDER INSIGHT", font=font_badge, fill="#A78BFA")
+
+        # Divider line
+        draw.line([(120, 190), (W - 120, 190)], fill="#1E293B", width=1)
+
+        # Quote Body
+        wrapped = textwrap.fill(hook_text, width=42)
+        draw.text((120, 230), f'"{wrapped}"', font=font_quote, fill="#F1F5F9", spacing=14)
+
+        # Footer
+        draw.line([(120, H - 140), (W - 120, H - 140)], fill="#1E293B", width=1)
+        draw.text((120, H - 115), "demoly.dev", font=font_footer, fill="#8B5CF6")
+        draw.text((250, H - 115), "|  The AI-Powered Browser Screen Recorder for Web Agencies", font=font_handle, fill="#64748B")
+
+        timestamp = int(time.time())
+        clean_slug = re.sub(r"[^a-z0-9]+", "_", slug.lower())[:30].strip("_")
+        filename = f"{timestamp}_quote_{clean_slug}.png"
+        save_path = GENERATED_IMAGES_DIR / filename
+        img.save(save_path)
+        print(f"[Image Generator] Generated Quote Card: {save_path.name}")
+        return _upload_to_cdn(save_path) or str(save_path)
+    except Exception as e:
+        print(f"[Image Generator Warning] Failed to render quote card: {e}")
+        return None
+
+
+# ---------------------------------------------------------------------------
+# Provider 3: Workflow Comparison Matrix (Before vs After Infographic)
+# ---------------------------------------------------------------------------
+
+def _get_comparison_data_from_gemini(post_text: str, focus_topic: str) -> Dict[str, Any]:
+    """Uses Gemini to generate Before vs After comparison points."""
+    try:
+        from src.gemini_client import GeminiClient
+        gemini = GeminiClient()
+        prompt = f"""You are an expert tech infographic designer for Demoly.
+Topic: "{focus_topic}"
+Post: "{post_text}"
+
+Generate JSON for a Before vs After comparison card:
+{{
+  "headline": "Punchy title under 40 chars",
+  "left_title": "Without Demoly",
+  "left_points": [
+    "Friction point 1 under 45 chars",
+    "Friction point 2 under 45 chars",
+    "Friction point 3 under 45 chars"
+  ],
+  "right_title": "With Demoly.dev",
+  "right_points": [
+    "Solution benefit 1 under 45 chars",
+    "Solution benefit 2 under 45 chars",
+    "Solution benefit 3 under 45 chars"
+  ]
+}}
+Return ONLY valid JSON."""
+        raw = gemini.generate_raw_text(prompt)
+        cleaned = re.sub(r"^```json\s*", "", raw, flags=re.MULTILINE)
+        cleaned = re.sub(r"^```\s*$", "", cleaned, flags=re.MULTILINE).strip()
+        data = json.loads(cleaned)
+        if "headline" in data and "left_points" in data and "right_points" in data:
+            return data
+    except Exception as e:
+        print(f"[Image Generator Warning] Comparison fallback: {e}")
+
+    return {
+        "headline": "The Client Handover Bottleneck",
+        "left_title": "Without Demoly",
+        "left_points": [
+            "30-min calls explaining basic buttons",
+            "Clients forget UI steps after 48h",
+            "5+ back-and-forth bug support tickets"
+        ],
+        "right_title": "With Demoly.dev",
+        "right_points": [
+            "1-click self-serve interactive replay",
+            "Inspect visual clicks and UI actions",
+            "Zero status calls, 80% fewer tickets"
+        ]
+    }
+
+
+def generate_comparison_infographic_card(post_text: str, focus_topic: str) -> Optional[str]:
+    """Generates high-contrast Before vs After comparison matrix (1200x675)."""
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+
+        data = _get_comparison_data_from_gemini(post_text, focus_topic)
+        headline = data.get("headline", "Workflow Comparison")
+        left_title = data.get("left_title", "Without Demoly")
+        left_points = data.get("left_points", [])
+        right_title = data.get("right_title", "With Demoly.dev")
+        right_points = data.get("right_points", [])
+
+        W, H = 1200, 675
+        img = Image.new("RGB", (W, H), color="#0A0E1A")
+        draw = ImageDraw.Draw(img)
+
+        font_path_b = "C:\\Windows\\Fonts\\segoeuib.ttf" if os.path.exists("C:\\Windows\\Fonts\\segoeuib.ttf") else "arialbd.ttf"
+        font_path_r = "C:\\Windows\\Fonts\\segoeui.ttf" if os.path.exists("C:\\Windows\\Fonts\\segoeui.ttf") else "arial.ttf"
+
+        try:
+            font_badge = ImageFont.truetype(font_path_b, 18)
+            font_h1 = ImageFont.truetype(font_path_b, 34)
+            font_col_h = ImageFont.truetype(font_path_b, 24)
+            font_item = ImageFont.truetype(font_path_r, 20)
+            font_symbol = ImageFont.truetype(font_path_b, 22)
+            font_footer = ImageFont.truetype(font_path_b, 18)
+        except Exception:
+            font_badge = font_h1 = font_col_h = font_item = font_symbol = font_footer = ImageFont.load_default()
+
+        # Violet ambient glow
+        for r in range(120, 0, -6):
+            alpha = int(14 * (r / 120))
+            draw.ellipse([W - 350 - r, -80 - r, W + 150 + r, 300 + r], outline=(124, 58, 237, alpha))
+
+        # Main Card
+        draw.rounded_rectangle([50, 40, W - 50, H - 40], radius=24, fill="#111827", outline="#1F2937", width=2)
+
+        # Top Badge & Headline
+        draw.rounded_rectangle([90, 75, 290, 115], radius=8, fill="#7C3AED")
+        draw.text((110, 83), "WORKFLOW COMPARISON", font=font_badge, fill="#FFFFFF")
+        draw.text((90, 135), headline, font=font_h1, fill="#F9FAFB")
+
+        col_w = 480
+        y_top = 210
+        box_h = 320
+
+        # Left Column (Friction)
+        draw.rounded_rectangle([90, y_top, 90 + col_w, y_top + box_h], radius=16, fill="#1F1622", outline="#5B2136", width=2)
+        draw.text((120, y_top + 25), left_title, font=font_col_h, fill="#F87171")
+        y = y_top + 80
+        for item in left_points[:4]:
+            draw.text((120, y), "x", font=font_symbol, fill="#EF4444")
+            draw.text((150, y + 2), item, font=font_item, fill="#D1D5DB")
+            y += 56
+
+        # Right Column (Solution)
+        x_right = W - 90 - col_w
+        draw.rounded_rectangle([x_right, y_top, x_right + col_w, y_top + box_h], radius=16, fill="#181F38", outline="#4338CA", width=2)
+        draw.text((x_right + 30, y_top + 25), right_title, font=font_col_h, fill="#A78BFA")
+        y = y_top + 80
+        for item in right_points[:4]:
+            draw.text((x_right + 30, y), "+", font=font_symbol, fill="#10B981")
+            draw.text((x_right + 60, y + 2), item, font=font_item, fill="#E0E7FF")
+            y += 56
+
+        # Footer
+        draw.line([(90, H - 90), (W - 90, H - 90)], fill="#2A344A", width=1)
+        draw.text((90, H - 75), "demoly.dev", font=font_footer, fill="#8B5CF6")
+        draw.text((220, H - 75), "|  Interactive Browser Screen Recording for Modern Web Agencies", font=font_item, fill="#6B7280")
+
+        timestamp = int(time.time())
+        slug = re.sub(r"[^a-z0-9]+", "_", focus_topic.lower())[:35].strip("_")
+        filename = f"{timestamp}_matrix_{slug}.png"
+        save_path = GENERATED_IMAGES_DIR / filename
+        img.save(save_path)
+        print(f"[Image Generator] Generated comparison infographic: {save_path.name}")
+        return _upload_to_cdn(save_path) or str(save_path)
+
+    except Exception as e:
+        print(f"[Image Generator Warning] Failed to generate comparison infographic: {e}")
+        return None
+
+
+# ---------------------------------------------------------------------------
+# Provider 4: Drake & Developer Meme Generator
+# ---------------------------------------------------------------------------
+
+def generate_drake_meme(top_text: str, bottom_text: str, slug: str) -> Optional[str]:
+    """Renders Drake Hotline Bling meme with custom captions and demoly.dev branding."""
+    try:
+        from PIL import Image, ImageDraw, ImageFont
         drake_path = TEMPLATES_DIR / "drake.jpg"
         if not drake_path.exists():
             import requests
@@ -90,15 +386,12 @@ def generate_drake_meme(top_text: str, bottom_text: str, slug: str) -> Optional[
         except Exception:
             font = badge_font = ImageFont.load_default()
 
-        # Top rejection text (what developers hate)
         wrapped_top = textwrap.fill(top_text, width=22)
         draw.text((W // 2 + 25, 80), wrapped_top, font=font, fill="#111827")
 
-        # Bottom approval text (Demoly solution)
         wrapped_bottom = textwrap.fill(bottom_text, width=22)
         draw.text((W // 2 + 25, H // 2 + 80), wrapped_bottom, font=font, fill="#111827")
 
-        # Demoly branding badge at bottom-right
         draw.rectangle([W - 160, H - 36, W - 8, H - 8], fill="#7C3AED")
         draw.text((W - 146, H - 32), "demoly.dev", font=badge_font, fill="#FFFFFF")
 
@@ -108,7 +401,6 @@ def generate_drake_meme(top_text: str, bottom_text: str, slug: str) -> Optional[
         save_path = GENERATED_IMAGES_DIR / filename
         img.save(save_path)
         print(f"[Image Generator] Generated Drake meme: {save_path.name}")
-
         return _upload_to_cdn(save_path) or str(save_path)
     except Exception as e:
         print(f"[Image Generator Warning] Failed to render Drake meme: {e}")
@@ -116,19 +408,17 @@ def generate_drake_meme(top_text: str, bottom_text: str, slug: str) -> Optional[
 
 
 def generate_meme_for_trend(post_text: str, focus_topic: str) -> Optional[str]:
-    """
-    Uses Gemini to craft a relatable meme punchline linking the trending topic to Demoly.
-    """
+    """Uses Gemini to craft a relatable meme punchline linking trending topic to Demoly."""
     try:
         from src.gemini_client import GeminiClient
         gemini = GeminiClient()
-        prompt = f"""You are a social media strategist creating a viral tech meme for Demoly (an AI browser screen recorder & client handover platform).
+        prompt = f"""You are a social media strategist creating a viral tech meme for Demoly.
 Topic: "{focus_topic}"
 Tweet: "{post_text}"
 
 Generate JSON for a Drake meme:
-- "top": The frustrating traditional way or annoying developer pain point (rejection text under 50 chars).
-- "bottom": The Demoly solution (approval text under 50 chars).
+- "top": Frustrating traditional way (under 50 chars).
+- "bottom": Demoly solution (under 50 chars).
 
 JSON schema:
 {{
@@ -141,7 +431,7 @@ Return ONLY valid JSON."""
         cleaned = re.sub(r"^```\s*$", "", cleaned, flags=re.MULTILINE).strip()
         data = json.loads(cleaned)
         top = data.get("top", "Hosting a 45-min Zoom call to explain UI updates")
-        bottom = data.get("bottom", "Sending a 15-sec Demoly DOM walkthrough")
+        bottom = data.get("bottom", "Sending a 15-sec Demoly video walkthrough")
         return generate_drake_meme(top, bottom, focus_topic)
     except Exception as e:
         print(f"[Image Generator Warning] Failed to generate meme copy: {e}")
@@ -149,197 +439,71 @@ Return ONLY valid JSON."""
 
 
 # ---------------------------------------------------------------------------
-# Provider 2: Workflow Comparison Infographic (Before vs After Matrix)
+# Master Dispatcher (Incorporating All Free Visual Modalities)
 # ---------------------------------------------------------------------------
-
-def _get_comparison_data_from_gemini(post_text: str, focus_topic: str) -> Dict[str, Any]:
-    """
-    Uses Gemini to generate structured Before vs After comparison points.
-    Guarantees the infographic does NOT duplicate the tweet sentences.
-    """
-    try:
-        from src.gemini_client import GeminiClient
-        gemini = GeminiClient()
-        prompt = f"""You are an expert tech infographic designer for Demoly (an interactive browser screen recording & AI client handover tool for web agencies).
-Based on this tweet and topic:
-Tweet: "{post_text}"
-Topic: "{focus_topic}"
-
-Generate a JSON object for a Before vs After comparison infographic.
-CRITICAL RULE: Do NOT repeat the tweet sentences verbatim. Extract 3 specific friction points for the left column, and 3 specific Demoly solutions for the right column.
-
-Return ONLY valid JSON matching this exact structure:
-{{
-  "headline": "Punchy title under 40 chars",
-  "left_title": "Without Demoly",
-  "left_points": [
-    "Friction point 1 under 45 chars",
-    "Friction point 2 under 45 chars",
-    "Friction point 3 under 45 chars"
-  ],
-  "right_title": "With Demoly.dev",
-  "right_points": [
-    "Solution benefit 1 under 45 chars",
-    "Solution benefit 2 under 45 chars",
-    "Solution benefit 3 under 45 chars"
-  ]
-}}"""
-        raw = gemini.generate_raw_text(prompt)
-        cleaned = re.sub(r"^```json\s*", "", raw, flags=re.MULTILINE)
-        cleaned = re.sub(r"^```\s*$", "", cleaned, flags=re.MULTILINE).strip()
-        data = json.loads(cleaned)
-        if "headline" in data and "left_points" in data and "right_points" in data:
-            return data
-    except Exception as e:
-        print(f"[Image Generator Warning] Gemini comparison generation fallback: {e}")
-
-    # Solid default if LLM JSON fails
-    return {
-        "headline": "The Client Handover Bottleneck",
-        "left_title": "Without Demoly",
-        "left_points": [
-            "30-min calls explaining basic buttons",
-            "Clients forget UI steps after 48h",
-            "5+ back-and-forth bug support tickets"
-        ],
-        "right_title": "With Demoly.dev",
-        "right_points": [
-            "1-click self-serve interactive replay",
-            "Inspect DOM state and live clicks",
-            "Zero status calls, 80% fewer tickets"
-        ]
-    }
-
-
-def generate_comparison_infographic_card(post_text: str, focus_topic: str) -> Optional[str]:
-    """
-    Generates a high-resolution (1200x675) dark-mode comparison matrix.
-    Adds genuine visual value without repeating the tweet text.
-    """
-    try:
-        from PIL import Image, ImageDraw, ImageFont
-
-        data = _get_comparison_data_from_gemini(post_text, focus_topic)
-        headline = data.get("headline", "Workflow Comparison")
-        left_title = data.get("left_title", "Without Demoly")
-        left_points = data.get("left_points", [])
-        right_title = data.get("right_title", "With Demoly.dev")
-        right_points = data.get("right_points", [])
-
-        W, H = 1200, 675
-        img = Image.new("RGB", (W, H), color="#0A0E1A")
-        draw = ImageDraw.Draw(img)
-
-        # Typography setup
-        font_path_b = "C:\\Windows\\Fonts\\segoeuib.ttf" if os.path.exists("C:\\Windows\\Fonts\\segoeuib.ttf") else "arialbd.ttf"
-        font_path_r = "C:\\Windows\\Fonts\\segoeui.ttf" if os.path.exists("C:\\Windows\\Fonts\\segoeui.ttf") else "arial.ttf"
-
-        try:
-            font_badge = ImageFont.truetype(font_path_b, 18)
-            font_h1 = ImageFont.truetype(font_path_b, 36)
-            font_col_h = ImageFont.truetype(font_path_b, 26)
-            font_item = ImageFont.truetype(font_path_r, 22)
-            font_symbol = ImageFont.truetype(font_path_b, 24)
-            font_footer = ImageFont.truetype(font_path_b, 18)
-        except Exception:
-            font_badge = font_h1 = font_col_h = font_item = font_symbol = font_footer = ImageFont.load_default()
-
-        # Violet ambient glow in background
-        for r in range(120, 0, -6):
-            alpha = int(14 * (r / 120))
-            draw.ellipse([W - 350 - r, -80 - r, W + 150 + r, 300 + r], outline=(124, 58, 237, alpha))
-
-        # Main Card container
-        draw.rounded_rectangle([50, 40, W - 50, H - 40], radius=24, fill="#111827", outline="#1F2937", width=2)
-
-        # Top Badge & Headline
-        draw.rounded_rectangle([90, 75, 290, 115], radius=8, fill="#7C3AED")
-        draw.text((110, 83), "WORKFLOW COMPARISON", font=font_badge, fill="#FFFFFF")
-        draw.text((90, 135), headline, font=font_h1, fill="#F9FAFB")
-
-        # Two Columns: Before vs After
-        col_w = 480
-        y_top = 210
-        box_h = 320
-
-        # Left Column (The Pain / Traditional)
-        draw.rounded_rectangle([90, y_top, 90 + col_w, y_top + box_h], radius=16, fill="#1F1622", outline="#5B2136", width=2)
-        draw.text((120, y_top + 25), left_title, font=font_col_h, fill="#F87171")
-
-        y = y_top + 80
-        for item in left_points[:4]:
-            draw.text((120, y), "x", font=font_symbol, fill="#EF4444")
-            draw.text((150, y + 2), item, font=font_item, fill="#D1D5DB")
-            y += 56
-
-        # Right Column (The Demoly Solution)
-        x_right = W - 90 - col_w
-        draw.rounded_rectangle([x_right, y_top, x_right + col_w, y_top + box_h], radius=16, fill="#181F38", outline="#4338CA", width=2)
-        draw.text((x_right + 30, y_top + 25), right_title, font=font_col_h, fill="#A78BFA")
-
-        y = y_top + 80
-        for item in right_points[:4]:
-            draw.text((x_right + 30, y), "+", font=font_symbol, fill="#10B981")
-            draw.text((x_right + 60, y + 2), item, font=font_item, fill="#E0E7FF")
-            y += 56
-
-        # Footer
-        draw.line([(90, H - 90), (W - 90, H - 90)], fill="#2A344A", width=1)
-        draw.text((90, H - 75), "demoly.dev", font=font_footer, fill="#8B5CF6")
-        draw.text((220, H - 75), "|  Interactive Browser Screen Recording for Modern Web Agencies", font=font_item, fill="#6B7280")
-
-        # Save locally
-        timestamp = int(time.time())
-        slug = re.sub(r"[^a-z0-9]+", "_", focus_topic.lower())[:35].strip("_")
-        filename = f"{timestamp}_matrix_{slug}.png"
-        save_path = GENERATED_IMAGES_DIR / filename
-        img.save(save_path)
-        print(f"[Image Generator] Generated comparison infographic: {save_path.name}")
-
-        # Upload to CDN
-        return _upload_to_cdn(save_path) or str(save_path)
-
-    except Exception as e:
-        print(f"[Image Generator Warning] Failed to generate comparison infographic: {e}")
-        return None
-
-
-# ---------------------------------------------------------------------------
-# Format Selector & Main Entry Point
-# ---------------------------------------------------------------------------
-
-def _is_trending_or_meme_topic(focus_topic: str, trend_connection: Optional[str], post_text: str) -> bool:
-    """
-    Evaluates whether the post is based on a trending topic, dev culture humor,
-    or viral take that is best served with a meme.
-    """
-    if trend_connection:
-        return True
-
-    text_lower = f"{focus_topic} {post_text}".lower()
-    meme_keywords = ["vibe coding", "pov:", "friday deployment", "meme", "drake"]
-    return any(k in text_lower for k in meme_keywords)
-
 
 def generate_image_for_post(
     focus_topic: str,
     trend_connection: Optional[str] = None,
     post_text: Optional[str] = None,
-    brand_style: str = "",
+    account: Optional[AccountConfig] = None,
 ) -> Optional[str]:
     """
-    Generates a graphic tailored to the post without duplicating the tweet text:
-      - Trending Topics & Dev Culture -> Viral Meme with Demoly promotion
-      - Product & Technical Topics    -> Workflow Comparison Infographic
+    Intelligently generates the highest-converting visual for the post:
+      1. Trend / Pop Culture Topics    -> Viral Developer Meme (Drake)
+      2. AI / Conceptual / Big Vision  -> Pollinations AI (Flux 3D Cyber Art)
+      3. Agency / Handover / Workflow  -> Before vs After Infographic Matrix
+      4. Founder Quotes / Hot Takes   -> Dark-Mode Viral Quote Card
+
+    100% Free - Zero cost, zero API keys required.
     """
-    print(f"\n[Image Generator] Generating image for topic: '{focus_topic[:80]}'")
+    print(f"\n[Image Generator] Generating free visual for: '{focus_topic[:70]}'")
     effective_text = post_text or focus_topic
+    text_lower = f"{focus_topic} {effective_text}".lower()
 
-    if _is_trending_or_meme_topic(focus_topic, trend_connection, effective_text):
-        print("[Image Generator] Trending/culture topic detected -> Generating Meme...")
-        meme_result = generate_meme_for_trend(effective_text, focus_topic)
-        if meme_result:
-            return meme_result
+    author_name = account.name.split("(")[0].strip() if account else "Demoly"
+    handle = "@Demolyy4ls"
+    if account and "@" in account.name:
+        handle_match = re.search(r"(@[A-Za-z0-9_]+)", account.name)
+        if handle_match:
+            handle = handle_match.group(1)
 
-    print("[Image Generator] Product/technical topic detected -> Generating Workflow Comparison...")
-    return generate_comparison_infographic_card(effective_text, focus_topic)
+    # Strategy 1: Viral Memes for Culture & Trending Drama
+    meme_keywords = ["meme", "pov:", "drake", "friday deployment", "client drama", "funny"]
+    if any(k in text_lower for k in meme_keywords) or (trend_connection and "meme" in trend_connection.lower()):
+        print("[Image Generator] Selecting: Viral Meme...")
+        res = generate_meme_for_trend(effective_text, focus_topic)
+        if res:
+            return res
+
+    # Strategy 2: Conceptual & Futuristic AI Imagery via Pollinations Flux
+    conceptual_keywords = ["future", "vision", "ai agent", "mcp server", "telemetry", "cursor", "anthropic", "claude", "browser interaction", "smart", "autonomous"]
+    if any(k in text_lower for k in conceptual_keywords):
+        print("[Image Generator] Selecting: Pollinations AI (Flux Text-to-Image)...")
+        res = generate_conceptual_image_for_post(effective_text, focus_topic)
+        if res:
+            return res
+
+    # Strategy 3: Direct Workflow Comparisons
+    comparison_keywords = ["vs", "compare", "without", "before", "handover", "loom", "drive", "bottleneck", "replace", "meetings"]
+    if any(k in text_lower for k in comparison_keywords):
+        print("[Image Generator] Selecting: Before vs After Matrix...")
+        res = generate_comparison_infographic_card(effective_text, focus_topic)
+        if res:
+            return res
+
+    # Strategy 4: High-Stakes Founder Quote / Viral Insight Card
+    first_sentence = effective_text.split("\n")[0].strip()
+    if len(first_sentence) > 30 and ("?" in first_sentence or "!" in first_sentence or "$" in first_sentence or "we" in first_sentence.lower()):
+        print("[Image Generator] Selecting: Viral Quote / Hook Card...")
+        res = generate_viral_quote_card(first_sentence, author_name=author_name, handle=handle, slug=focus_topic)
+        if res:
+            return res
+
+    # Universal Fallback: Workflow Comparison or Pollinations AI
+    print("[Image Generator] Defaulting to Workflow Comparison Card...")
+    res = generate_comparison_infographic_card(effective_text, focus_topic)
+    if res:
+        return res
+
+    return generate_pollinations_image(prompt=f"Minimalist dark mode tech interface for {focus_topic}, violet accents", slug=focus_topic)

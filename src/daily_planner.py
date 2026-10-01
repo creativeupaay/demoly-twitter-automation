@@ -31,7 +31,12 @@ from src.trend_fetcher import (
     get_realtime_trending_context,
     get_realtime_trending_hashtags,
 )
-from src.media_manager import load_media_catalog, format_media_catalog_for_prompt
+from src.media_manager import (
+    load_media_catalog,
+    format_media_catalog_for_prompt,
+    rotate_or_validate_media,
+    get_available_media_for_account,
+)
 from src.content_generator import (
     load_style_guide,
     load_recent_published_posts,
@@ -59,34 +64,41 @@ class DailyCadencePlan(BaseModel):
 PLANNER_SYSTEM_PROMPT = """
 You are the Head of Growth and Technical Social Strategist for Demoly (https://demoly.dev).
 Demoly is an AI-powered browser screen recorder, client handover platform, and visual bug reporting tool built specifically for tech agencies, web development studios, and QA teams.
-Demoly captures the browser DOM (Document Object Model) alongside video, enabling AI visual search on silent videos, element-level privacy masking, public interactive AI links, and MCP server integrations for Cursor/Antigravity/Claude Code.
+Demoly captures live browser interactions alongside video, enabling AI visual search on silent videos, element-level privacy masking, public interactive AI links, and MCP server integrations for Cursor/Antigravity/Claude Code.
 
 Your task is to craft today's 3-POST CONTENT PLAN tailored specifically to the assigned target account:
-1. One Single Tweet (strictly text-only, punchy insight or question)
-2. One Thread (strictly text-only, multi-tweet deep dive or framework)
+1. One Single Tweet (strictly text-only, punchy insight, question, or counter-intuitive take)
+2. One Thread (strictly text-only, multi-tweet deep dive, story, or framework)
 3. One Post with Photo/Video (showcases authentic product media with matching copy)
 
 ACCOUNT PERSONA SPECIALIZATION RULES:
-1. IF TARGET ACCOUNT IS 'Demoly Official':
-   - Focus on Demoly's authentic origin story at agency Creative Pie (delivering 85+ client platforms).
+1. IF TARGET ACCOUNT IS 'Demoly Official' (@Demolyy4ls):
+   - Focus on Demoly's authentic origin story at agency Creative Upaay (delivering 85+ client platforms).
    - The 35-60 walkthrough video bottleneck for an enterprise law firm client where clients refused to watch 10-min videos for a 10-sec button and booked repeat calls (2-4 hrs/week lost per dev).
-   - How Demoly beats Loom (DOM vs audio transcript only) and Google Drive (100MB streaming block).
+   - How Demoly beats Loom (indexing visual UI actions vs spoken audio only) and Google Drive (100MB streaming block).
    - Turning passive videos into active AI assistants that talk back, public interactive AI links, and company mission.
+   - STRICT RULE: DO NOT use the word "DOM" at all! Use natural, conversational language.
+   - DO NOT tag @Demolyy4ls (official brand account).
 
-2. IF TARGET ACCOUNT IS 'Tech Lead / Systems Engineer':
-   - Focus on browser internals: DOM tree indexing vs lossy pixel video OCR / transcripts.
-   - Model Context Protocol (MCP) server integration for Cursor, Claude Code, and Antigravity (feeding DOM snapshots, console logs, and network calls directly to AI agents).
-   - Element-level DOM privacy masking vs raster blur, deterministic AI visual search on silent videos, and developer tooling efficiency.
+2. IF TARGET ACCOUNT IS 'Tech Lead / Systems Engineer' (Manish @ManishBulchand9):
+   - Focus on browser internals: visual event indexing vs lossy pixel video OCR / transcripts.
+   - Model Context Protocol (MCP) server integration for Cursor, Claude Code, and Antigravity (feeding visual telemetry, console logs, and network calls directly to AI agents).
+   - Element-level privacy masking, deterministic AI visual search on silent videos, and developer tooling efficiency.
+   - STRICT RULE: Limit the word "DOM" to at most ONCE per post/thread.
+   - MANDATORY: Must naturally tag official account @Demolyy4ls.
 
-3. IF TARGET ACCOUNT IS 'Agency Ops / SaaS Strategist':
+3. IF TARGET ACCOUNT IS 'Agency Ops / SaaS Strategist' (Sourabh @scalebysourabh):
    - Focus on client handover bottlenecks, eliminating unpaid post-launch scope creep, and saving 2 to 4 billable hours every week per team member.
    - Replacing 30-minute Google Meet walkthroughs with interactive videos that answer questions autonomously.
    - Killing 40-page software documentation manuals that no client reads, accelerating invoice sign-offs, and protecting agency gross margins.
+   - STRICT RULE: DO NOT use the word "DOM" at all!
+   - MANDATORY: Must naturally tag official account @Demolyy4ls.
 
 PLANNING RULES & STRATEGY:
-1. TREND-FIRST EVALUATION:
-   - Examine real-time tech trends and Twitter trending hashtags fetched live today.
-   - Allocate the format (Single, Thread, or Media) that best addresses today's prominent trend or community discussion.
+1. 🔥 VIRAL STORYLINES, CLICKBAITS & CATCHY HOOKS (MANDATORY):
+   - Every post plan must aim for maximum engagement, high curiosity, and scroll-stopping hooks.
+   - Use storylines, relatable founder/agency drama, career leverage ("if you do this your boss will give you a promotion"), money-saving hacks ("how I saved $2,000/yr on video tools"), and contrarian insights.
+   - NEVER plan boring corporate announcements or formulaic openers (e.g. avoid "Most AI tools...", "Recording a 10-minute video is an agency lie...").
 
 2. DYNAMIC SOURCE SELECTION & VARIETY:
    - Draw from Live Trends, Demoly FAQ capabilities, and Topic Bank angles.
@@ -98,10 +110,11 @@ PLANNING RULES & STRATEGY:
    - Exactly ONE item MUST have format="thread" and post_type="thread" with preferred_media=null and generate_image=false.
    - Exactly ONE item MUST have format="media" and post_type="single".
 
-4. MEDIA ASSET REUSE POLICY (FOR THE MEDIA POST):
-   - You CAN and SHOULD REUSE the authentic product videos (Demoly Tutorial #1 to #8) and UI screenshots (img1 to img19) in AVAILABLE AUTHENTIC PRODUCT MEDIA whenever they visually reinforce the topic!
-   - Media assets are evergreen visual proof and can be paired repeatedly with fresh angles.
-   - Set preferred_media=<exact filename from catalog> and generate_image=false.
+4. 📸 MEDIA ASSET ROTATION & STRICT ANTI-DUPLICATION (FOR THE MEDIA POST):
+   - Check the AVAILABLE AUTHENTIC PRODUCT MEDIA section.
+   - NEVER pick any asset from the "RECENTLY USED MEDIA ON THIS ACCOUNT" list!
+   - You MUST pick a FRESH, UNUSED media asset from the eligible list so the account cycles through diverse tutorials and UI screens.
+   - Set preferred_media=<exact filename from fresh catalog> and generate_image=false.
    - Alternatively, if the post is purely trend-first and no catalog asset fits, set generate_image=true and preferred_media=null.
 
 5. STRICT DEDUPLICATION:
@@ -116,11 +129,12 @@ def plan_daily_cadence(
     gemini_client: Optional[GeminiClient] = None,
     account: Optional[AccountConfig] = None,
     batch_excluded_topics: Optional[List[str]] = None,
+    batch_excluded_media: Optional[List[str]] = None,
 ) -> DailyCadencePlan:
     """
     Analyzes live trends, available assets, and recent posts to construct
     an optimized 3-post daily cadence plan.
-    Supports multi-account personas and batch-level topic deduplication.
+    Supports multi-account personas and batch-level topic and media deduplication.
     """
     acct_label = f" for account '{account.name}'" if account else ""
     print(f"\n[Daily Planner] Analyzing live trends, assets, and topic bank{acct_label}...")
@@ -128,7 +142,10 @@ def plan_daily_cadence(
     trending_hashtags = get_realtime_trending_hashtags()
     recent_posts = load_recent_published_posts(limit=30, current_account_name=account.name if account else None)
     topic_inspiration = load_topic_inspiration(limit=8, persona_name=account.name if account else None)
-    available_media = format_media_catalog_for_prompt()
+    available_media = format_media_catalog_for_prompt(
+        account_name=account.name if account else None,
+        batch_excluded_media=batch_excluded_media,
+    )
 
     account_prompt_section = ""
     if account:
@@ -205,19 +222,26 @@ Create today's 3-post strategy plan now according to the planning rules.
         plan.items[1].generate_image = False
 
         plan.items[2].format = "media"
-        catalog = load_media_catalog()
-        if catalog and not plan.items[2].preferred_media and not plan.items[2].generate_image:
-            plan.items[2].preferred_media = catalog[0].get("filename")
+        if not plan.items[2].preferred_media and not plan.items[2].generate_image:
+            avail = get_available_media_for_account(account_name=account.name if account else None, batch_excluded=batch_excluded_media)
+            if avail:
+                plan.items[2].preferred_media = avail[0].get("filename")
 
-    # Ensure media item has either preferred_media or generate_image=True
+    # Ensure media item has either validated preferred_media or generate_image=True
     for item in plan.items:
-        if item.format == "media" and not item.preferred_media and not item.generate_image:
-            # Default: pick first catalog asset if no decision was made
-            catalog = load_media_catalog()
-            if catalog:
-                item.preferred_media = catalog[0].get("filename")
-            else:
-                item.generate_image = True  # No catalog? Generate one.
+        if item.format == "media":
+            if item.preferred_media and not item.generate_image:
+                item.preferred_media = rotate_or_validate_media(
+                    item.preferred_media,
+                    account_name=account.name if account else None,
+                    batch_excluded=batch_excluded_media,
+                )
+            elif not item.preferred_media and not item.generate_image:
+                avail = get_available_media_for_account(account_name=account.name if account else None, batch_excluded=batch_excluded_media)
+                if avail:
+                    item.preferred_media = avail[0].get("filename")
+                else:
+                    item.generate_image = True
 
     print(f"[Daily Planner] Successfully planned 3 posts.")
     print(f"[Daily Planner Strategy]: {plan.trend_analysis}")

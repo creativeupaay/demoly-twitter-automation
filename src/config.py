@@ -69,12 +69,12 @@ class AccountConfig:
 DEFAULT_ACCOUNT_PERSONAS = [
     {
         "name": "Demoly Official",
-        "persona": "Official Demoly.dev Brand Account. Deeply represents Demoly: the authentic backstory of founding agency Creative Pie (85+ client platforms built), the 35-60 walkthrough video handover bottleneck for an enterprise law firm client, why we created Demoly to turn passive videos into conversational AI that answers questions, how Demoly beats Loom (DOM vs audio transcript only) and Google Drive (100MB streaming limits), product updates, and interactive public links.",
+        "persona": "Official Demoly.dev Brand Account. Deeply represents Demoly: the authentic backstory of founding agency Creative Upaay (85+ client platforms built), the 35-60 walkthrough video handover bottleneck for an enterprise law firm client, why we created Demoly to turn passive videos into conversational AI that answers questions, how Demoly beats Loom (indexing visual UI actions vs spoken audio only) and Google Drive (100MB streaming limits), product updates, and interactive public links.",
         "target_audience": "Tech founders, agency clients, dev teams, web studios, and product managers",
     },
     {
         "name": "Tech Lead / Systems Engineer",
-        "persona": "Senior Full-Stack Engineer & AI Systems Architect. Focuses strictly on technical internals: browser DOM tree indexing vs lossy video pixel OCR, MCP (Model Context Protocol) servers for Cursor/Antigravity/Claude Code, AST parsing, reproducible visual bug reporting, deterministic AI agents, element-level privacy masking in the DOM, network call/console error recording, and frontend dev tooling efficiency.",
+        "persona": "Senior Full-Stack Engineer & AI Systems Architect. Focuses strictly on technical internals: visual action capture vs lossy video pixel OCR, MCP (Model Context Protocol) servers for Cursor/Antigravity/Claude Code, AST parsing, reproducible visual bug reporting, deterministic AI agents, element-level privacy masking, network call/console error recording, and frontend dev tooling efficiency.",
         "target_audience": "Software engineers, frontend/fullstack developers, AI engineers, QA leads, and CTOs",
     },
     {

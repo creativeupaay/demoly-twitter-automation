@@ -21,6 +21,7 @@ from src.config import (
     IMAGES_DIR,
     MEDIA_CATALOG_PATH,
     MEDIA_BASE_URL,
+    PUBLISHED_CSV_PATH,
 )
 from src.gemini_client import GeminiClient
 
@@ -308,24 +309,147 @@ def scan_and_index_assets() -> int:
     return added_count
 
 
-def format_media_catalog_for_prompt() -> str:
+def get_used_media_for_account(account_name: Optional[str] = None, lookback: int = 30) -> List[str]:
     """
-    Formats the registered media catalog into concise context for Gemini's prompt.
-    Returns a string describing available videos and images.
+    Returns the list of media filenames used recently by this account (or all accounts if None),
+    read from data/published_posts.csv in reverse chronological order (most recent first).
+    """
+    if not PUBLISHED_CSV_PATH.exists():
+        return []
+    import csv
+    used = []
+    try:
+        with open(PUBLISHED_CSV_PATH, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            rows = list(reader)
+        # Search backwards from most recent
+        for r in reversed(rows):
+            med = (r.get("Media") or "").strip()
+            if not med or med.lower() in ("none", "null", ""):
+                continue
+            acct = (r.get("Account") or "").strip()
+            # If account_name specified, match case-insensitively or substring
+            if account_name:
+                p_acc = account_name.lower().split()[0]  # e.g. "demoly", "manish", "sourabh"
+                if p_acc not in acct.lower() and account_name.lower() != acct.lower():
+                    continue
+            used.append(med)
+            if len(used) >= lookback:
+                break
+    except Exception as e:
+        print(f"[Media Tracker Warning] Error reading media history: {e}")
+    return used
+
+
+def get_available_media_for_account(
+    account_name: Optional[str] = None,
+    batch_excluded: Optional[List[str]] = None,
+    media_type: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    """
+    Returns media catalog assets prioritized for this account:
+    1. Excludes assets in batch_excluded (picked by other accounts in this batch).
+    2. Prioritizes assets NEVER used by this account or least-recently used.
+    3. Guarantees no repeated picture on the same account.
     """
     catalog = load_media_catalog()
     if not catalog:
+        return []
+
+    excluded_set = set(batch_excluded or [])
+    used_recently = get_used_media_for_account(account_name=account_name, lookback=25)
+    used_set = set(used_recently)
+
+    # Filter by media_type if specified
+    eligible = [e for e in catalog if e.get("filename") not in excluded_set]
+    if media_type:
+        eligible = [e for e in eligible if e.get("type") == media_type]
+
+    # Partition into fresh (never used recently) and used
+    fresh = [e for e in eligible if e.get("filename") not in used_set]
+
+    # For used assets, sort by least-recently used (earliest in history / furthest from most recent)
+    def lru_key(item):
+        fname = item.get("filename")
+        if fname in used_recently:
+            return used_recently.index(fname)
+        return 9999
+
+    used_sorted = sorted([e for e in eligible if e.get("filename") in used_set], key=lru_key, reverse=True)
+
+    # Return fresh assets first, followed by LRU assets
+    return fresh + used_sorted
+
+
+def rotate_or_validate_media(
+    chosen_filename: Optional[str],
+    account_name: Optional[str] = None,
+    batch_excluded: Optional[List[str]] = None,
+) -> Optional[str]:
+    """
+    Hard safety guard: If the chosen media was already used recently by this account
+    or in the current batch, automatically rotates to the best fresh or least-recently-used asset.
+    """
+    if not chosen_filename:
+        return None
+
+    excluded = set(batch_excluded or [])
+    recent_used = get_used_media_for_account(account_name=account_name, lookback=10)
+
+    # If filename is valid and NOT used in last 10 posts and NOT in batch_excluded: keep it!
+    if chosen_filename not in excluded and chosen_filename not in recent_used:
+        return chosen_filename
+
+    print(f"[Media Rotation] Media '{chosen_filename}' was recently used by {account_name or 'account'} or in current batch. Auto-rotating to a fresh asset...")
+    available = get_available_media_for_account(account_name=account_name, batch_excluded=batch_excluded)
+    if available:
+        rotated = available[0].get("filename")
+        print(f"[Media Rotation] Selected fresh asset: '{rotated}'")
+        return rotated
+    return chosen_filename
+
+
+def format_media_catalog_for_prompt(
+    account_name: Optional[str] = None,
+    batch_excluded_media: Optional[List[str]] = None,
+) -> str:
+    """
+    Formats the registered media catalog into concise context for Gemini's prompt,
+    filtering and prioritizing fresh, unused assets for this account to prevent repeats.
+    """
+    available = get_available_media_for_account(
+        account_name=account_name,
+        batch_excluded=batch_excluded_media,
+    )
+    if not available:
+        catalog = load_media_catalog()
+        available = catalog or []
+
+    if not available:
         return "None available yet. (Generate standard text-only post or thread)."
 
-    lines = ["Available authentic product media you can attach:"]
-    for item in catalog:
+    recent_used = get_used_media_for_account(account_name=account_name, lookback=15)
+    used_notice = ""
+    if recent_used:
+        used_notice = (
+            f"\n⚠️ RECENTLY USED MEDIA ON THIS ACCOUNT (STRICTLY FORBIDDEN TO REUSE TODAY):\n"
+            + ", ".join(recent_used[:10])
+            + "\nDO NOT pick any of the above files! You MUST pick a FRESH asset from the list below.\n"
+        )
+
+    # Show up to 10 top prioritized assets (fresh assets first)
+    lines = [
+        f"Available authentic product media you can attach (prioritized fresh assets for {account_name or 'today'}):",
+        used_notice,
+    ]
+    for item in available[:10]:
         m_type = item.get("type", "media").upper()
         fname = item.get("filename", "")
         summary = item.get("summary", "")
         caps = ", ".join(item.get("capabilities", []))
         lines.append(f"- [{m_type}] Filename: \"{fname}\" | Shows: {summary} | Capabilities: {caps}")
 
-    lines.append("\nRULE: If you select a media file above, set 'media_filename' to its exact filename and write your tweet copy to introduce or highlight what is shown on screen.")
+    lines.append("\nRULE: If you select a media file above, pick ONLY from the fresh eligible list, set 'media_filename' to its exact filename, and write your tweet copy to introduce or highlight what is shown on screen.")
     return "\n".join(lines)
 
 
