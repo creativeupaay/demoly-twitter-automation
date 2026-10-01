@@ -85,10 +85,10 @@ def generate_pollinations_image(
     Uses flux-schnell (free, no auth) with turbo fallback.
     No API key or payment required.
     """
-    # Free models in order of preference (flux-schnell is the free tier)
-    free_models = [model, "flux-schnell", "turbo", "flux"]
+    # Free models: flux-schnell is the active free tier on Pollinations
+    free_models = [model, "flux-schnell"]
     seen = set()
-    ordered_models = [m for m in free_models if not (m in seen or seen.add(m))]
+    ordered_models = [m for m in free_models if m and not (m in seen or seen.add(m))]
 
     timestamp = int(time.time())
     clean_slug = re.sub(r"[^a-z0-9]+", "_", slug.lower())[:30].strip("_")
@@ -112,7 +112,7 @@ def generate_pollinations_image(
                 content = resp.read()
                 if len(content) > 5000:
                     save_path.write_bytes(content)
-                    print(f"[Pollinations AI] ✅ Saved: {save_path.name} ({len(content):,} bytes) via {attempt_model}")
+                    print(f"[Pollinations AI] [OK] Saved: {save_path.name} ({len(content):,} bytes) via {attempt_model}")
                     return _upload_to_cdn(save_path) or str(save_path)
                 else:
                     print(f"[Pollinations AI] Model {attempt_model}: response too small ({len(content)} bytes), trying next...")
@@ -123,11 +123,22 @@ def generate_pollinations_image(
     return None
 
 
-def generate_conceptual_image_for_post(post_text: str, focus_topic: str) -> Optional[str]:
+def generate_conceptual_image_for_post(
+    post_text: str,
+    focus_topic: str,
+    account: Optional[AccountConfig] = None,
+) -> Optional[str]:
     """
-    Uses Gemini to craft a tailored visual prompt then generates via Pollinations free tier.
-    Falls back to viral quote card if generation fails.
+    Uses Gemini to craft a tailored visual prompt then generates a rich 3D AI visual via Pollinations flux-schnell.
+    Falls back to comparison card or quote card if generation fails.
     """
+    author_name = account.name.split("(")[0].strip() if account else "Demoly"
+    handle = "@Demolyy4ls"
+    if account and "@" in account.name:
+        handle_match = re.search(r"(@[A-Za-z0-9_]+)", account.name)
+        if handle_match:
+            handle = handle_match.group(1)
+
     try:
         from src.gemini_client import GeminiClient
         gemini = GeminiClient()
@@ -137,31 +148,31 @@ Create an ultra-detailed, aesthetic text-to-image prompt for the topic: "{focus_
 Context from post: "{post_text[:140]}"
 
 Style Rules:
-- Modern dark mode aesthetic, deep violet #7C3AED and electric indigo accents, clean neon lighting.
-- Futuristic 3D isometric browser interface, glowing telemetry nodes, elegant glassmorphism, hyper-clean minimal composition.
+- Modern dark mode aesthetic, deep violet #7C3AED and electric indigo neon accents, clean dark glassmorphism background.
+- Futuristic 3D isometric browser interface, glowing interactive nodes, sleek floating UI cards, minimal composition.
 - Cinematic lighting, octane render, 8k resolution, photorealistic, Behance trending UI, highly polished tech product.
-- DO NOT include garbled text or ugly watermarks. Focus on 3D UI cards, visual streams, AI chat bubbles, and interactive workflows.
+- DO NOT include garbled text, letters, or ugly watermarks. Focus entirely on 3D geometric UI cards, glowing waveforms, AI chat bubbles, and interactive workflows.
 
-Return ONLY the raw visual prompt text (under 60 words). No commentary."""
+Return ONLY the raw visual prompt text (under 50 words). No commentary."""
 
         visual_prompt = gemini.generate_raw_text(prompt).strip()
         visual_prompt = re.sub(r"^[\"']|[\"']$", "", visual_prompt).strip()
         print(f"[Image Generator] Crafting visual with prompt: {visual_prompt[:90]}...")
-        # Use flux-schnell (free tier) first
+        # Use flux-schnell (free tier)
         result = generate_pollinations_image(prompt=visual_prompt, slug=focus_topic, model="flux-schnell")
         if result:
             return result
-        # Pillow quote card as backup
-        print("[Image Generator] Pollinations failed, generating quote card instead...")
+        # Fallback to comparison card or quote card
+        print("[Image Generator] Pollinations failed, generating comparison/quote card fallback...")
         first_line = (post_text or focus_topic).split("\n")[0][:100]
-        return generate_viral_quote_card(first_line, author_name="Demoly", handle="@Demolyy4ls", slug=focus_topic)
+        return generate_viral_quote_card(first_line, author_name=author_name, handle=handle, slug=focus_topic)
     except Exception as e:
         print(f"[Image Generator Warning] Conceptual image prompt creation failed: {e}")
         return None
 
 
 # ---------------------------------------------------------------------------
-# Provider 2: Viral Quote / Hook Visual Card
+# Provider 2: Viral Quote / Hook Visual Card (Premium Dark Mode)
 # ---------------------------------------------------------------------------
 
 def generate_viral_quote_card(
@@ -171,74 +182,146 @@ def generate_viral_quote_card(
     slug: str = "quote",
 ) -> Optional[str]:
     """
-    Renders a high-engagement dark-mode visual card featuring a bold statement/hook.
+    Renders a premium dark-mode quote card with bold hook text,
+    vibrant avatar gradient, glowing border, and branded footer.
     """
     try:
         from PIL import Image, ImageDraw, ImageFont
 
         W, H = 1200, 675
-        img = Image.new("RGB", (W, H), color="#080C16")
+        img = Image.new("RGB", (W, H), color="#050810")
         draw = ImageDraw.Draw(img)
 
-        # Ambient gradient glow
-        for r in range(140, 0, -8):
-            alpha = int(18 * (r / 140))
-            draw.ellipse([W - 380 - r, -100 - r, W + 120 + r, 280 + r], outline=(124, 58, 237, alpha))
-            draw.ellipse([-100 - r, H - 280 - r, 300 + r, H + 100 + r], outline=(99, 102, 241, alpha))
+        # --- Background: subtle grid dots pattern ---
+        for x in range(0, W, 40):
+            for y in range(0, H, 40):
+                draw.ellipse([x - 1, y - 1, x + 1, y + 1], fill="#0E1528")
 
-        # Main Card with subtle border
-        draw.rounded_rectangle([70, 60, W - 70, H - 60], radius=28, fill="#0F172A", outline="#1E293B", width=2)
+        # --- Ambient glow blobs ---
+        for r in range(200, 0, -10):
+            alpha = max(1, int(12 * (r / 200)))
+            draw.ellipse([W - 400 - r, -150 - r, W + 50 + r, 300 + r],
+                         outline=(124, 58, 237, alpha))
+            draw.ellipse([-80 - r, H - 300 - r, 280 + r, H + 80 + r],
+                         outline=(79, 70, 229, alpha))
 
-        # Fonts
-        font_path_b = "C:\\Windows\\Fonts\\segoeuib.ttf" if os.path.exists("C:\\Windows\\Fonts\\segoeuib.ttf") else "arialbd.ttf"
-        font_path_r = "C:\\Windows\\Fonts\\segoeui.ttf" if os.path.exists("C:\\Windows\\Fonts\\segoeui.ttf") else "arial.ttf"
+        # --- Glowing card border ---
+        for i in range(4, 0, -1):
+            draw.rounded_rectangle(
+                [60 - i, 50 - i, W - 60 + i, H - 50 + i],
+                radius=32 + i,
+                outline=(100, 50, 220, 30 + i * 8),
+            )
+        draw.rounded_rectangle([60, 50, W - 60, H - 50], radius=32,
+                                fill="#0B1120", outline="#2D1B69", width=2)
+
+        # --- Fonts ---
+        fpath_b = "C:\\Windows\\Fonts\\segoeuib.ttf"
+        fpath_r = "C:\\Windows\\Fonts\\segoeui.ttf"
+        fpath_i = "C:\\Windows\\Fonts\\segoeuii.ttf"
+        use_bold = os.path.exists(fpath_b)
+        use_reg = os.path.exists(fpath_r)
 
         try:
-            font_name = ImageFont.truetype(font_path_b, 26)
-            font_handle = ImageFont.truetype(font_path_r, 20)
-            font_quote = ImageFont.truetype(font_path_b, 34)
-            font_badge = ImageFont.truetype(font_path_b, 16)
-            font_footer = ImageFont.truetype(font_path_b, 18)
+            font_avatar  = ImageFont.truetype(fpath_b if use_bold else "arialbd.ttf", 32)
+            font_name    = ImageFont.truetype(fpath_b if use_bold else "arialbd.ttf", 24)
+            font_handle  = ImageFont.truetype(fpath_r if use_reg else "arial.ttf", 18)
+            font_quote   = ImageFont.truetype(fpath_b if use_bold else "arialbd.ttf", 42)
+            font_tag     = ImageFont.truetype(fpath_b if use_bold else "arialbd.ttf", 14)
+            font_footer  = ImageFont.truetype(fpath_r if use_reg else "arial.ttf", 16)
         except Exception:
-            font_name = font_handle = font_quote = font_badge = font_footer = ImageFont.load_default()
+            font_avatar = font_name = font_handle = font_quote = font_tag = font_footer = ImageFont.load_default()
 
-        # Author Badge Header
-        draw.ellipse([120, 110, 176, 166], fill="#7C3AED")
-        draw.text((138, 122), "D", font=font_name, fill="#FFFFFF")
+        # --- Avatar: gradient circle with initials ---
+        avatar_cx, avatar_cy, avatar_r = 120, 140, 36
+        # Glow ring around avatar
+        for ri in range(avatar_r + 14, avatar_r - 1, -1):
+            glow_alpha = max(0, int(60 * ((ri - avatar_r) / 14)))
+            draw.ellipse(
+                [avatar_cx - ri, avatar_cy - ri, avatar_cx + ri, avatar_cy + ri],
+                outline=(139, 92, 246, glow_alpha),
+            )
+        draw.ellipse(
+            [avatar_cx - avatar_r, avatar_cy - avatar_r,
+             avatar_cx + avatar_r, avatar_cy + avatar_r],
+            fill="#4C1D95",
+        )
+        # Gradient inner circle
+        draw.ellipse(
+            [avatar_cx - avatar_r + 3, avatar_cy - avatar_r + 3,
+             avatar_cx + avatar_r - 3, avatar_cy + avatar_r - 3],
+            fill="#6D28D9",
+        )
+        # Initials
+        initials = "".join(w[0].upper() for w in author_name.split()[:2] if w)[:2]
+        bbox = draw.textbbox((0, 0), initials, font=font_avatar)
+        tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+        draw.text((avatar_cx - tw // 2, avatar_cy - th // 2 - 2), initials,
+                  font=font_avatar, fill="#EDE9FE")
 
-        draw.text((195, 115), author_name, font=font_name, fill="#F8FAFC")
-        draw.text((195, 146), handle, font=font_handle, fill="#64748B")
+        # --- Author name + handle ---
+        name_x = avatar_cx + avatar_r + 20
+        draw.text((name_x, 118), author_name, font=font_name, fill="#F1F5F9")
+        draw.text((name_x, 148), handle, font=font_handle, fill="#7C3AED")
 
-        # Verified tick
-        draw.rounded_rectangle([195 + len(author_name) * 16 + 10, 118, 195 + len(author_name) * 16 + 32, 140], radius=11, fill="#38BDF8")
-        draw.text((195 + len(author_name) * 16 + 16, 120), "v", font=font_badge, fill="#0F172A")
+        # --- Verified badge ---
+        vx = name_x + int(len(author_name) * 14.5) + 8
+        draw.ellipse([vx, 120, vx + 22, 142], fill="#2563EB")
+        draw.text((vx + 6, 122), "v", font=font_tag, fill="#FFFFFF")
 
-        # Top Pill Tag
-        draw.rounded_rectangle([W - 320, 115, W - 120, 155], radius=10, fill="#1E1B4B", outline="#4338CA")
-        draw.text((W - 300, 124), "FOUNDER INSIGHT", font=font_badge, fill="#A78BFA")
+        # --- Category pill (top right) ---
+        pill_w, pill_h = 160, 34
+        pill_x = W - 80 - pill_w
+        draw.rounded_rectangle([pill_x, 115, pill_x + pill_w, 115 + pill_h],
+                                radius=17, fill="#1E1B4B", outline="#4C1D95", width=1)
+        draw.text((pill_x + 16, 122), "FOUNDER STORY", font=font_tag, fill="#A78BFA")
 
-        # Divider line
-        draw.line([(120, 190), (W - 120, 190)], fill="#1E293B", width=1)
+        # --- Separator ---
+        draw.line([(90, 188), (W - 90, 188)], fill="#1E293B", width=1)
 
-        # Quote Body
-        wrapped = textwrap.fill(hook_text, width=42)
-        draw.text((120, 230), f'"{wrapped}"', font=font_quote, fill="#F1F5F9", spacing=14)
+        # --- Opening quote mark ---
+        draw.text((90, 200), '"', font=ImageFont.truetype(fpath_b if use_bold else "arialbd.ttf", 80),
+                  fill="#3B1F8C")
 
-        # Footer
-        draw.line([(120, H - 140), (W - 120, H - 140)], fill="#1E293B", width=1)
-        draw.text((120, H - 115), "demoly.dev", font=font_footer, fill="#8B5CF6")
-        draw.text((250, H - 115), "|  The AI-Powered Browser Screen Recorder for Web Agencies", font=font_handle, fill="#64748B")
+        # --- Main quote text (big, bold, wrapped) ---
+        max_chars = 36 if len(hook_text) > 100 else 44
+        wrapped_lines = textwrap.wrap(hook_text, width=max_chars)
+        quote_y = 240
+        line_spacing = 56
+        for line in wrapped_lines[:4]:  # max 4 lines
+            draw.text((110, quote_y), line, font=font_quote, fill="#F8FAFC")
+            quote_y += line_spacing
 
+        # --- Closing quote mark ---
+        draw.text((W - 120, quote_y - 20), '"',
+                  font=ImageFont.truetype(fpath_b if use_bold else "arialbd.ttf", 80),
+                  fill="#3B1F8C")
+
+        # --- Bottom separator ---
+        draw.line([(90, H - 100), (W - 90, H - 100)], fill="#1E293B", width=1)
+
+        # --- Footer row ---
+        # Left: demoly.dev logo text
+        draw.text((100, H - 82), "demoly.dev", font=font_name, fill="#8B5CF6")
+        # Dot
+        draw.ellipse([230, H - 72, 238, H - 64], fill="#334155")
+        # Tagline
+        draw.text((250, H - 80),
+                  "The AI-Powered Browser Screen Recorder | Build in Public",
+                  font=font_footer, fill="#475569")
+
+        # Save & upload
         timestamp = int(time.time())
         clean_slug = re.sub(r"[^a-z0-9]+", "_", slug.lower())[:30].strip("_")
         filename = f"{timestamp}_quote_{clean_slug}.png"
         save_path = GENERATED_IMAGES_DIR / filename
-        img.save(save_path)
-        print(f"[Image Generator] Generated Quote Card: {save_path.name}")
+        img.save(save_path, quality=95)
+        print(f"[Image Generator] [OK] Generated Premium Quote Card: {save_path.name}")
         return _upload_to_cdn(save_path) or str(save_path)
     except Exception as e:
         print(f"[Image Generator Warning] Failed to render quote card: {e}")
         return None
+
 
 
 # ---------------------------------------------------------------------------
@@ -487,42 +570,34 @@ def generate_image_for_post(
         if handle_match:
             handle = handle_match.group(1)
 
-    # Strategy 1: Viral Memes for Culture & Trending Drama
-    meme_keywords = ["meme", "pov:", "drake", "friday deployment", "client drama", "funny"]
+    # Strategy 1: Viral Memes for Culture & Trending Drama (explicit meme request only)
+    meme_keywords = ["meme", "drake meme", "friday deployment meme"]
     if any(k in text_lower for k in meme_keywords) or (trend_connection and "meme" in trend_connection.lower()):
         print("[Image Generator] Selecting: Viral Meme...")
         res = generate_meme_for_trend(effective_text, focus_topic)
         if res:
             return res
 
-    # Strategy 2: Conceptual & Futuristic AI Imagery via Pollinations Flux
-    conceptual_keywords = ["future", "vision", "ai agent", "mcp server", "telemetry", "cursor", "anthropic", "claude", "browser interaction", "smart", "autonomous"]
-    if any(k in text_lower for k in conceptual_keywords):
-        print("[Image Generator] Selecting: Pollinations AI (Flux Text-to-Image)...")
-        res = generate_conceptual_image_for_post(effective_text, focus_topic)
-        if res:
-            return res
+    # Strategy 2 (PRIMARY): Creative AI Visual via Pollinations flux-schnell
+    # Generates a customized 3D isometric dark-mode SaaS render tailored to the post
+    print("[Image Generator] Selecting: Pollinations AI (Flux Text-to-Image Render)...")
+    res = generate_conceptual_image_for_post(effective_text, focus_topic, account=account)
+    if res:
+        return res
 
-    # Strategy 3: Direct Workflow Comparisons
+    # Strategy 3 (Fallback 1): Direct Workflow Comparison Matrix
     comparison_keywords = ["vs", "compare", "without", "before", "handover", "loom", "drive", "bottleneck", "replace", "meetings"]
     if any(k in text_lower for k in comparison_keywords):
-        print("[Image Generator] Selecting: Before vs After Matrix...")
+        print("[Image Generator] Fallback: Before vs After Matrix...")
         res = generate_comparison_infographic_card(effective_text, focus_topic)
         if res:
             return res
 
-    # Strategy 4: High-Stakes Founder Quote / Viral Insight Card
+    # Strategy 4 (Fallback 2): High-Stakes Founder Quote / Viral Insight Card
     first_sentence = effective_text.split("\n")[0].strip()
-    if len(first_sentence) > 30 and ("?" in first_sentence or "!" in first_sentence or "$" in first_sentence or "we" in first_sentence.lower()):
-        print("[Image Generator] Selecting: Viral Quote / Hook Card...")
-        res = generate_viral_quote_card(first_sentence, author_name=author_name, handle=handle, slug=focus_topic)
-        if res:
-            return res
-
-    # Universal Fallback: Workflow Comparison or Pollinations AI
-    print("[Image Generator] Defaulting to Workflow Comparison Card...")
-    res = generate_comparison_infographic_card(effective_text, focus_topic)
+    print("[Image Generator] Fallback: Viral Quote / Hook Card...")
+    res = generate_viral_quote_card(first_sentence, author_name=author_name, handle=handle, slug=focus_topic)
     if res:
         return res
 
-    return generate_pollinations_image(prompt=f"Minimalist dark mode tech interface for {focus_topic}, violet accents", slug=focus_topic)
+    return generate_comparison_infographic_card(effective_text, focus_topic)

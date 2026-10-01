@@ -50,6 +50,7 @@ from src.research_analyzer import run_research_analysis
 from src.buffer_client import BufferClient, print_available_channels
 from src.gemini_client import GeneratedPostModel
 from src.media_manager import scan_and_index_assets
+from src.image_generator import generate_image_for_post
 
 
 def log_published_post(
@@ -79,7 +80,7 @@ def log_published_post(
 
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     post_type = content.type
-    media_info = content.media_filename or "none"
+    media_info = content.media_filename or content.media_url or "none"
     combined_content = " || ".join(content.posts)
     acct = account_name or "Default"
 
@@ -100,12 +101,14 @@ def run_pipeline(
     share_now: bool = False,
     media_file: Optional[str] = None,
     no_media: bool = False,
+    generate_image: bool = False,
+    account_index: int = 0,
 ) -> None:
     """
     Runs the full Demoly.dev content generation and publishing pipeline.
+    account_index: 0=Demoly Official, 1=Manish Tech Lead, 2=Sourabh Agency Ops
     """
     # Determine execution mode
-    # Default is DRY RUN. LIVE mode is active if explicitly requested or configured via env.
     if force_dry_run:
         is_live = False
     elif force_live:
@@ -113,7 +116,13 @@ def run_pipeline(
     else:
         is_live = LIVE_MODE and not DRY_RUN
 
+    # Resolve selected account early so content generation is persona-aware
+    accounts = get_configured_accounts()
+    selected_account = accounts[account_index] if accounts and account_index < len(accounts) else (accounts[0] if accounts else None)
+
     print("\n" + "=" * 60)
+    if selected_account:
+        print(f" TARGET ACCOUNT: [{account_index}] {selected_account.name}")
     if is_live:
         print(" [WARNING] RUNNING IN LIVE PUBLISHING MODE")
         if in_minutes:
@@ -126,13 +135,29 @@ def run_pipeline(
         print(" [SAFE] RUNNING IN DRY RUN MODE (NO POSTING WILL OCCUR)")
     print("=" * 60)
 
-    # 1. Generate original content with Gemini
+    # 1. Generate original content with Gemini tailored to the persona
     print("\n[Step 1/3] Generating content via Gemini...")
     content: GeneratedPostModel = generate_post(
         content_type_preference=post_type,
         preferred_media_filename=media_file,
-        allow_media=False if no_media else None,
+        allow_media=False if (no_media or generate_image) else None,
+        account=selected_account,
     )
+
+    # 1b. Generate AI image if requested (and no catalog asset forced)
+    if generate_image and not media_file:
+        print("\n[Step 1b/3] Generating AI image via Pollinations flux-schnell...")
+        image_url = generate_image_for_post(
+            focus_topic=content.posts[0][:80] if content.posts else "Demoly AI screen recording",
+            post_text=content.posts[0] if content.posts else None,
+            account=selected_account,
+        )
+        if image_url:
+            content.media_url = image_url
+            content.media_filename = None
+            print(f"[Step 1b/3] AI image attached: {image_url}")
+        else:
+            print("[Step 1b/3] AI image generation failed — posting text-only.")
 
     # 2. Display formatted content to user
     print("\n" + "=" * 50)
@@ -162,15 +187,17 @@ def run_pipeline(
             content=content,
             buffer_id="DRY_RUN_NO_ID",
             status="DRY_RUN",
+            account_name=selected_account.name if selected_account else "Default",
         )
         return
 
     # LIVE PUBLISHING PATH
     print("\n[Step 2/3] Publishing to Buffer...")
 
-    # Resolve channel_id: prefer first configured account, fallback to env BUFFER_CHANNEL_ID
-    accounts = get_configured_accounts()
-    resolved_channel_id = accounts[0].id if accounts and accounts[0].id else None
+    # Resolve channel_id for selected account
+    resolved_channel_id = selected_account.id if selected_account and selected_account.id else None
+    if selected_account:
+        print(f"[Account] Publishing as: {selected_account.name}")
     buffer_client = BufferClient(channel_id=resolved_channel_id)
 
 
@@ -217,7 +244,12 @@ def run_pipeline(
 
     # Step 3: Record in Audit Log
     status_entry = f"sent ({post_due_at})" if post_due_at else publish_status
-    log_published_post(content=content, buffer_id=buffer_id, status=status_entry)
+    log_published_post(
+        content=content,
+        buffer_id=buffer_id,
+        status=status_entry,
+        account_name=selected_account.name if selected_account else "Default",
+    )
 
 
 def get_optimal_engagement_slots(now_utc: Optional[datetime] = None) -> List[datetime]:
@@ -505,6 +537,18 @@ def main():
         help="Force attachment of a specific media file from assets/ (e.g. --media silent_search.mp4)",
     )
     parser.add_argument(
+        "--generate-image",
+        action="store_true",
+        help="Generate a free AI image (Pollinations / Pillow) and attach it to the post",
+    )
+    parser.add_argument(
+        "--account",
+        type=int,
+        default=0,
+        choices=[0, 1, 2],
+        help="Account index to post from: 0=Demoly Official, 1=Manish Tech Lead, 2=Sourabh Agency Ops (default: 0)",
+    )
+    parser.add_argument(
         "--no-media",
         action="store_true",
         help="Force post to be text-only (no image or video attached)",
@@ -563,6 +607,8 @@ def main():
             share_now=args.share_now,
             media_file=args.media,
             no_media=args.no_media,
+            generate_image=args.generate_image,
+            account_index=args.account,
         )
 
     except KeyboardInterrupt:
