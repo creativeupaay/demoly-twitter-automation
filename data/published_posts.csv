@@ -517,3 +517,66 @@ How many meetings could your team cancel this week?
 Demoly organizes your client handovers into clean project workspaces so every asset lives in one searchable place.
 
 #agency #SaaS #buildinpublic",6abcddfc722737d0c45f0bbd,sent (2026-09-30T17:00:00.000Z),img18.png,Sourabh - Agency Ops Strategist (@scalebysourabh)
+2026-10-01 10:28:41 UTC,thread,"Dumping heavy MP4 files into a shared cloud folder is an instant way to frustrate clients. When video files exceed ~100MB, standard storage drives fail to stream them directly in the browser.
+
+Demoly streams interactive handover recordings instantly with DOM-native AI search. || #webdev #software",6abe35d9cfc1f64cd8b376c1,sent (2026-10-02T04:30:00.000Z),none,Demoly Official (@Demolyy4ls)
+2026-10-01 10:28:44 UTC,thread,"Delivering 50 custom handover walkthroughs for an enterprise law firm client sounded like the gold standard of agency service.
+
+Then reality hit our team at Creative Pie like a freight train. || Clients refused to scrub 10-minute videos to find a 10-second button. They kept booking 15-minute Google Meets to ask questions already explained on screen.
+
+Our developers lost hours every single week answering identical queries. || That operational nightmare is why we built Demoly.
+
+We realized passive video files are dead weight. Handovers need to actively answer client questions on demand without scheduling another meeting. || Demoly indexes the live browser DOM alongside video, letting clients query recordings conversationally and jump straight to the exact second they need.
+
+#SaaS #buildinpublic #productivity",6abe35dc8ffc71f26acf3db3,sent (2026-10-01T13:00:00.000Z),none,Demoly Official (@Demolyy4ls)
+2026-10-01 10:28:53 UTC,single,"Clients never watch 10-minute walkthrough videos. They always schedule a 20-minute meeting to ask where the button is.
+
+Demoly fixes this with DOM-native AI search so clients query the video directly.
+
+#ai #tech || Demoly Tutorial #6_ How to Use AI Search _ Find Anything in Your Recordings.mp4",6abe35e5d1d6494723248a32,sent (2026-10-01T17:00:00.000Z),Demoly Tutorial #6_ How to Use AI Search _ Find Anything in Your Recordings.mp4,Demoly Official (@Demolyy4ls)
+2026-10-01 10:29:02 UTC,thread,"Most screen recorders force a heavy 200MB desktop binary just to capture browser pixels.
+
+Demoly uses a lightweight Chrome extension to hook directly into the browser DOM runtime, capturing Tab telemetry, console logs, and click events without OS bloat. || #softwareengineering #webdev",6abe35ee8ffc71f26acf3f3a,sent (2026-10-02T04:30:00.000Z),none,Manish - Tech Lead (@ManishBulchand9)
+2026-10-01 10:29:06 UTC,thread,"Vibe coding a frontend in 2 hours with Claude Code or Cursor is amazing.
+
+Then your QA engineer files a bug report with a cropped PNG and zero context.
+
+Your AI agent is completely blind to the browser DOM state, console errors, and network telemetry. || Most engineers waste hours trying to reproduce frontend bugs from a flat screenshot.
+
+An LLM needs structured DOM trees, exact layout state, and timestamped user interactions to actually diagnose the root cause without guessing. || That is why we built an MCP (Model Context Protocol) server directly into Demoly.
+
+Demoly connects your bug recordings, DOM snapshots, console logs, and network payloads straight to your AI coding agents in Cursor or Antigravity. || Instead of manually transcribing bugs or explaining UI flaws to an LLM, your coding agent inspects the exact DOM hierarchy at the precise timestamp of failure.
+
+Demoly bridges the gap between visual testing and autonomous AI debugging. || How does your team currently feed frontend bug context to your AI coding assistants?
+
+#ai #coding #vibecoding",6abe35f28ffc71f26acf3f8a,sent (2026-10-01T13:00:00.000Z),none,Manish - Tech Lead (@ManishBulchand9)
+2026-10-01 10:29:09 UTC,single,"Most privacy redaction tools use static pixel-blur boxes that shatter the second a web page scrolls or scales.
+
+Demoly binds redaction masks directly to the DOM node layer, ensuring your PII and Stripe keys stay securely hidden across dynamic UI states.
+
+#software #productivity",6abe35f58ffc71f26acf3fbf,sent (2026-10-01T17:00:00.000Z),img3.png,Manish - Tech Lead (@ManishBulchand9)
+2026-10-01 10:29:17 UTC,single,"An unexpected agency use case we discovered:
+
+Technical instructors and bootcamps are using Demoly so students query video tutorials directly via AI instead of flooding inboxes with repeat questions.
+
+Automate your training handovers.
+
+#productivity #guide #tech",6abe35fdf2fcbd2a08735836,sent (2026-10-02T04:30:00.000Z),none,Sourabh - Agency Ops Strategist (@scalebysourabh)
+2026-10-01 10:29:21 UTC,thread,"Project managers and QA leads bear the heaviest operational tax during client handovers.
+
+Scattering loose video links across Slack messages leads to endless revision cycles and unpaid scope creep.
+
+Here is how agency operations scale past this chaos: || When client handovers rely on isolated links, your PM spends hours tracking down which video covers what question.
+
+Clients refuse to watch 10-minute recordings, defaulting straight back to booking 30-minute support calls. || Demoly centralizes all project deliverables into clean, segregated client workspaces with role-based permissions.
+
+Every walkthrough is indexed down to the DOM layer, allowing clients to query exact features instantly. || Instead of filing vague bug reports with cropped PNGs, your QA engineers and PMs can record visual flows backed by precise console and layout states.
+
+Demoly cuts unnecessary revision cycles and protects your team's billable hours. || How does your agency currently organize client deliverables after launching a web app?
+
+#SaaS #agency #workflow",6abe3600d1d6494723248c1b,sent (2026-10-01T13:00:00.000Z),none,Sourabh - Agency Ops Strategist (@scalebysourabh)
+2026-10-01 10:29:27 UTC,single,"Scattering client handover links across loose Slack channels is a fast track to endless support emails and unpaid scope creep.
+
+Demoly lets you organize workspaces and invite team members in seconds so client onboarding runs smoothly.
+
+#buildinpublic #webdev #software || Demoly Tutorial #8_ How to Add Team Members to Your Workspace _ Team Collaboration.mp4",6abe36063ba994290b1d36bd,sent (2026-10-01T17:00:00.000Z),Demoly Tutorial #8_ How to Add Team Members to Your Workspace _ Team Collaboration.mp4,Sourabh - Agency Ops Strategist (@scalebysourabh)
