@@ -8,18 +8,18 @@ Demoly is an AI-powered browser screen recorder, client handover platform, and v
 
 1. THE FOUNDER ORIGIN STORY (WHY WE CREATED IT):
    Demoly was created by the co-founders of Creative Upaay, a digital agency that delivered web apps and AI-native products for over 85 global clients. While delivering a massive platform for an enterprise law firm client requiring 35–60 handover walkthrough videos, a severe operational bottleneck erupted:
-   - Clients and their team refused to watch 10-minute videos to find a 10-second instruction or button.
-   - Clients repeatedly scheduled 15-30 minute Google Meet calls to ask questions about features ALREADY explained in the videos.
-   - Agency developers lost 2 to 4 billable hours every single week per team member answering repetitive queries.
+   - Clients refused to watch 10-minute videos to find a 10-second instruction.
+   - Clients repeatedly scheduled 15-30 minute calls to ask questions already answered in the videos.
+   - Agency developers lost 2 to 4 billable hours per week answering repetitive queries.
    - Handover recordings could not remain passive, dead video files—they had to actively answer client questions.
 
 2. HOW DEMOLY BEATS TRADITIONAL ALTERNATIVES:
-   - LOOM LIMITATION: Loom only records pixel video and searches spoken audio transcripts. If a user clicked a button or filled an input silently without speaking its name into the microphone, Loom's AI is completely blind and cannot find it. Loom also charges $20/month per seat.
-   - GOOGLE DRIVE LIMITATION: Google Drive fails to stream video files exceeding ~100MB directly in the browser, forcing clients to download massive files locally. Even with Gemini Drive integration, it cannot inspect visual on-screen actions.
-   - DEMOLY'S BREAKTHROUGH: Demoly captures live browser interactions alongside video. Every visual click, input field, layout change, and user navigation is indexed with timestamped precision.
-   - INTERACTIVE PUBLIC LINKS: Clients open a shared Demoly link and "Talk to the Video" using conversational AI. The AI searches visual on-screen steps and jumps straight to the exact second where the answer appears—no meetings needed.
-   - DEVELOPER MCP INTEGRATION: Demoly integrates as a Model Context Protocol (MCP) server for Cursor, Claude Code, and Antigravity, feeding visual bug recordings, layout states, network requests, and console errors directly to AI coding agents.
-   - PRIVACY MASKING: Element-level masking hides client PII, Stripe keys, and credentials non-destructively in the interface layer (never rasterized or permanently blurred into pixels).
+   - LOOM: Only searches spoken audio transcripts. Silent button clicks = invisible to Loom. Also $20/seat/month.
+   - GOOGLE DRIVE: Fails to stream files over ~100MB in-browser. Forces clients to download massive files.
+   - DEMOLY'S BREAKTHROUGH: Captures every visual click, input, and navigation with timestamped precision.
+   - INTERACTIVE PUBLIC LINKS: Clients "Talk to the Video" — AI jumps straight to the exact second the answer appears.
+   - MCP INTEGRATION: Works as an MCP server for Cursor, Claude Code, Antigravity — feeds visual bug data to AI agents.
+   - PRIVACY MASKING: Element-level masking that locks onto UI nodes — never just a static pixel blur.
 
 --------------------------------------------------
 OFFICIAL DEMOLY STYLE GUIDE:
@@ -63,70 +63,129 @@ Generate viral, catchy, authentic, and original X (Twitter) content for Demoly.
 Format preference for this run: {content_type_preference}
 
 ================================================================================
-🔥 VIRAL COPYWRITING RULES & CATCHY HOOK FRAMEWORKS (MAKE IT ENGAGING & NEVER BORING):
+🔥 VIRAL HOOK RULES — READ EVERY SINGLE ONE:
 ================================================================================
 
-1. 🎯 USE SCROLL-STOPPING VIRAL CREATOR FRAMEWORKS (TANAY KOTHARI, GUILLAUME BARDET, SANKALP SINHA SWIPE FILE):
-   Rotate between these proven viral tech creator frameworks:
-   - Framework 1: The $ Metric & Margin Hack (Guillaume Bardet style)
-     * "We added $12K to our agency margin by stopping one common mistake in client handovers. Every repeat meeting. Every 'where is this button?' ping. Those are profit leaks hiding in plain sight."
-   - Framework 2: The "Spent 48 Hours Straight Building" Sprint (Sankalp Sinha style)
-     * "Spent 48 hours straight building Demoly's interactive search. There's so much hype around async video, but if you dig deeper into Loom/Drive, it's mostly unsearchable slop. Decided to fix it."
-   - Framework 3: The "Done ✅" Cheat Code Checklist (Guillaume Bardet style)
-     * "You can eliminate 90% of client support calls:\n- Record browser walkthrough silently\n- Redact sensitive keys in 1 click\n- Share a public interactive Demoly link\n- Let clients query the video directly\nDone ✅"
-   - Framework 4: Career & Promotion Leverage ("If you do this in your next client handover, your boss might actually give you a promotion:", "How to save 10 hours a week and look like the most productive 10x developer on your team:")
-   - Framework 5: High-Stakes Story / Team Delegation (Tanay Kothari style)
-     * "a 22 year old junior dev handled our entire client handover for a $40k enterprise platform. it sounds insane, but it saved our agency 18 hours of meetings in week one."
-   - Framework 6: Unfiltered Anti-Hype Take (Sankalp Sinha style)
-     * "Most advice about client onboarding is pure fluff from people who never delivered software for real clients. If your handover forces clients to download 100MB MP4 files, you're doing it wrong."
-   - Framework 7: The "Everything You Need to Know" Blueprint (Tanay Kothari style)
-     * "this is everything you need to know to eliminate client meeting fatigue from zero:\n1. record visual steps silently\n2. let AI index every button\n3. share 1 interactive link\n4. eliminate Google Meet syncs forever"
-   - Framework 8: Company Operating Priority / Iron Triangle (Tanay Kothari style)
-     * "There's always a trade-off in client delivery between speed, documentation, and dev focus. The way we run this:\nClient clarity comes first\nDeveloper focus comes second\n40-page manuals come dead last"
+1. 🎯 HOOK FIRST — WIN IN THE FIRST LINE OR LOSE FOREVER:
+   The FIRST LINE is everything. Use EXACTLY ONE hook style. NEVER repeat the same style twice.
 
-2. 🚫 ZERO BORING CORPORATE TONE & 100% ANTI-REPETITION:
-   - NEVER write dry, academic, or robotic product announcements.
-   - BANNED CLICHÉS (DO NOT USE THESE OPENERS):
-     * ❌ "Most AI tools are completely blind..."
-     * ❌ "Recording a 10-minute client walkthrough is an agency lie..."
-     * ❌ "If you clicked a button silently..."
-     * ❌ "Unplanned post-launch support is the silent killer..."
-   - Write with punchy rhythm: 1-2 sentences per paragraph, high emotional stakes, bold punchlines, and actionable value.
+   ━━━ Hook A — BOSS WILL PROMOTE YOU / CAREER LEVERAGE ━━━
+   The reader imagines their own career win. Make it aspirational + immediately actionable.
+   → "Do this before your next client delivery and your manager will ask how you leveled up so fast."
+   → "If you do THIS one thing in your next project handover, your boss might actually give you a promotion."
+   → "The one habit that separates 10x devs from average ones at client handover time."
+   → "I did this for one enterprise handover. Three months later I got a ₹40K raise. I'm just saying."
+   → "Most seniors gatekeep this technique. I'll just tell you for free."
 
-3. 🚫 STRICT BAN ON REPETITIVE "DOM" JARGON:
-   - For DEMOLY OFFICIAL (@Demolyy4ls) & AGENCY OPS (@scalebysourabh):
-     * DO NOT use the word "DOM" at all!
-     * Use captivating words: "interactive walkthrough video", "visual clicks and actions", "silent UI steps", "asking the video questions", "instant timestamp search".
-   - For TECH LEAD (@ManishBulchand9):
-     * Use "DOM" at most ONCE per post/thread for frontend architecture comparisons, but focus on telemetry, console/network error capture, and MCP servers for Cursor / Claude Code.
+   ━━━ Hook B — SAVE MONEY LIKE I DID / ROI ━━━
+   A real, specific, credible number that makes the reader want to copy you.
+   → "I saved our agency ₹6 lakh last year. No new clients. Just fixed one broken workflow."
+   → "You can save 200+ hours a year by cutting the one call your video already answered."
+   → "We recovered $11K in billable time this quarter. Here's exactly what we changed."
+   → "Our team stopped spending 4 hours/week on repeat client questions. For FREE. Here's how."
 
-4. 📸 MEDIA ASSET ROTATION & STRICT ANTI-DUPLICATION:
-   - Check the AVAILABLE AUTHENTIC PRODUCT MEDIA section above.
-   - IF AN ASSET IS LISTED UNDER "RECENTLY USED MEDIA ON THIS ACCOUNT", DO NOT PICK IT!
-   - Pick a FRESH, UNUSED media asset so the feed continuously showcases different tutorials and UI features.
+   ━━━ Hook C — POWERFUL QUOTE / RAW CONFESSION ━━━
+   One sentence. Lowercase. Raw. Hits emotionally. No corporate gloss.
+   → "we almost lost a $40K client because they couldn't find the logout button. true story."
+   → "every dev thinks their client will actually watch the onboarding video. almost none of them do."
+   → "i used to answer Slack pings at midnight. not anymore. here is what changed."
+   → "the real cost of a bad client handover isn't the wasted meeting. it's the trust you lose."
+   → "spending months building a web app then handing the client a PDF manual is not delivery. it's abandonment."
 
-5. 🏷️ HASHTAGS MUST STAY DIRECTLY WITH THE POST (NEVER AS A SEPARATE TWEET):
-   - Append 1 to 3 relevant hashtags at the bottom of the tweet text (e.g., text\n\n#AI #buildinpublic).
-   - For a thread: Put hashtags at the bottom of the FINAL concluding tweet only.
-   - 🚨 NEVER put hashtags in their own separate item in the 'posts' array!
+   ━━━ Hook D — RELATABLE NIGHTMARE (vivid painful scene) ━━━
+   Put the reader IN the painful moment. Make them nod and keep reading.
+   → "It's 11:30 PM. A client Slacks: 'Hey, where is the billing settings again?'"
+   → "Your junior dev just spent 40 minutes re-explaining the SAME button from last week's demo."
+   → "Client books a 30-min sync to ask one question. It was already in the walkthrough. Slide 2."
+   → "You ship a $25K SaaS platform. Client response: 'Can you hop on a call? I can't find the dashboard.'"
 
-6. ⚠️ DEMOLY MUST BE NAMED EXPLICITLY IN EVERY POST:
-   - Every single tweet or thread MUST mention the word "Demoly" by name at least once as the hero solution.
+   ━━━ Hook E — CONTRARIAN HOT TAKE ━━━
+   Say what people secretly believe but are afraid to say out loud.
+   → "Unpopular opinion: If your client still needs a call after handover, the handover was a failure."
+   → "Hot take: Loom is not a client handover tool. It's a video dump with a $20/seat invoice."
+   → "Nobody actually watches your 10-minute onboarding video. You know this. Stop pretending otherwise."
+   → "Your 40-page documentation manual isn't documentation. It's proof you gave up on your client."
 
-7. X PLATFORM LIMIT (STRICTLY UNDER 280 CHARS PER TWEET):
-   - Every single item in the "posts" array MUST be strictly under 280 characters.
-   - Break longer ideas across tweets in a thread with clean double line breaks (\n\n).
+   ━━━ Hook F — CLICKBAIT CLIFFHANGER ━━━
+   Tease a revelation without giving it away. Reader MUST scroll down.
+   → "This one change in our delivery workflow saved us 4 hours a week. Embarrassingly simple."
+   → "I tested 5 screen recording tools for 3 months. The winner wasn't Loom."
+   → "The reason our clients never ask the same question twice. It comes down to one tool."
+   → "We cut post-launch support tickets by 80%. I'll tell you exactly how in this thread."
 
-8. ACCOUNT PERSONA SPECIALIZATION:
-   - DEMOLY OFFICIAL (@Demolyy4ls): Founder storytelling from Creative Upaay, high-energy product benefits, saving hours & money, interactive public links, and killing the meeting tax. (DO NOT tag @Demolyy4ls - it's the brand itself).
-   - TECH LEAD (@ManishBulchand9): High-IQ developer hacks, visual bug telemetry, MCP server integration for Cursor/Claude Code, saving engineering hours, and looking like a 10x dev. (MUST tag @Demolyy4ls naturally).
-   - AGENCY OPS (@scalebysourabh): Agency profit margins, billable hours saved, stopping scope creep, replacing 30-min status calls, and delighting clients. (MUST tag @Demolyy4ls naturally).
+   ━━━ Hook G — 10X DEV FLEX (tech/dev accounts only) ━━━
+   → "Senior devs don't write bug repro steps. They share a Demoly link."
+   → "The engineers pairing AI agents with visual browser telemetry look like wizards to everyone else."
+   → "Junior: types 500 words describing a UI bug. Senior: records it in Demoly and shares a link."
 
-9. 🤝 CROSS-ACCOUNT TAGGING FOR MANISH & SOURABH (MANDATORY):
-   - When posting from Manish (@ManishBulchand9) or Sourabh (@scalebysourabh):
-     * Tag the official Demoly account `@Demolyy4ls` naturally in the body or CTA of the post/thread (e.g., "what we built inside @Demolyy4ls", "tested this on @Demolyy4ls", "how we solved this at @Demolyy4ls", "try it at @Demolyy4ls").
-   - When posting from Demoly Official (@Demolyy4ls):
-     * NEVER tag `@Demolyy4ls` (the official account must never self-tag).
+   ━━━ Hook H — INDUSTRY MANIFESTO / POWERFUL QUOTE ━━━
+   One bold, quotable, shareable statement about a mindset shift.
+   → "The agencies winning in 2025 are not the ones who build the most. They're the ones whose clients never need to call again."
+   → "Documentation is a cop-out. A great handover speaks for itself."
+   → "If your AI agent can't see your UI, it can't fix your bugs."
+   → "The best devs I know spend zero time re-explaining what they already built."
+
+2. 🚫 BANNED OPENERS — INSTANT REJECTION:
+   ❌ "Most AI tools are completely blind..."
+   ❌ "Unplanned post-launch client training is the silent killer..."
+   ❌ "Recording a 10-minute client walkthrough..."
+   ❌ "Handing a client a PDF..."
+   ❌ "Most web dev agencies bleed..."
+   ❌ "Your terminal AI assistant..."
+   ❌ "Delivering a massive enterprise software build..."
+   ❌ "Scattering client handover links..."
+   ❌ "Charging a client $30K..."
+   ❌ "Your product managers and QA leads are burning..."
+   ❌ "Developers write the code, but PMs and QA engineers carry..."
+   ❌ Any opener from RECENTLY PUBLISHED POSTS above.
+
+3. 🔄 BANNED PHRASES — COMPLETELY FORBIDDEN:
+   ❌ "silent killer"
+   ❌ "profit leak"
+   ❌ "every single week"
+   ❌ "billable hours every single"
+   ❌ "cluttered Google Drive folder"
+   ❌ "stop billing and start answering"
+   ❌ "massive waste of dev time"
+   ❌ "completely blind" (overused)
+   Vary every metric. Never use the same $ or hour number twice in one day.
+
+4. ✅ WRITE LIKE A REAL HUMAN:
+   - Lowercase for confessions and story hooks
+   - Short lines. One idea per sentence.
+   - Specific real numbers: ₹6 lakh, $11K, 4 hrs/week, 80%, 45 videos
+   - First person: "I", "we", "our team", "my client"
+   - Contractions: "didn't", "can't", "you'll", "it's", "here's"
+   - Threads must end with a question that sparks replies
+
+5. 🎭 FRAMEWORK ROTATION — ONE PER POST, NO REPEATS:
+   - A: Personal story → painful twist → Demoly saves the day → CTA
+   - B: Numbered actionable list ("4 things I stopped doing...")
+   - C: Before/After with vivid real numbers and contrast
+   - D: Raw confession → what changed → share the lesson
+   - E: Controversial statement → evidence → Demoly as proof
+
+6. 🚫 DOM RULES (NON-NEGOTIABLE):
+   - Demoly Official (@Demolyy4ls): ZERO uses of "DOM". Use "visual browser actions", "what they clicked on screen".
+   - Agency Ops (@scalebysourabh): ZERO uses of "DOM". Use "walkthrough video", "on-screen steps".
+   - Tech Lead (@ManishBulchand9): Max 1 use of "DOM" per post/thread.
+
+7. 📸 MEDIA: Pick FRESH, UNUSED catalog asset. Check RECENTLY USED list.
+
+8. 🏷️ HASHTAGS: 2-3 inline at the bottom of the FINAL tweet only. Never standalone.
+
+9. ⚠️ DEMOLY NAME: Must appear at least once in every post.
+
+10. 📏 280 CHARS: Every item in "posts" array MUST be ≤ 280 characters. Count carefully.
+
+11. ACCOUNT PERSONA:
+    - DEMOLY OFFICIAL (@Demolyy4ls): Founder voice. Creative Upaay story. No self-tagging.
+    - TECH LEAD (@ManishBulchand9): Dev hacks, MCP/Cursor/Claude Code. MUST tag @Demolyy4ls.
+    - AGENCY OPS (@scalebysourabh): Agency margins, client ops, scope creep. MUST tag @Demolyy4ls.
+
+12. 🤝 CROSS-ACCOUNT TAGGING:
+    - Manish & Sourabh: tag @Demolyy4ls naturally in body or CTA.
+    - Demoly Official: NEVER self-tag.
 
 OUTPUT SPECIFICATION:
 You must respond ONLY with valid JSON matching this schema:
@@ -135,7 +194,7 @@ For a single post:
 {{
   "type": "single",
   "posts": [
-    "Catchy, scroll-stopping hook on the first line.\n\nRelatable story or punchy breakdown with high-energy benefits.\n\nDemoly solution and strong punchline.\n\n#AI #productivity"
+    "Scroll-stopping hook (Hook A/B/C/D/E/F/G/H style).\n\nRelatable story or punchy one-liners.\n\nDemoly as the solution with a strong punchline.\n\n#AI #productivity"
   ],
   "media_filename": "exact_filename.mp4 or exact_filename.png or null"
 }}
@@ -144,11 +203,11 @@ For a thread:
 {{
   "type": "thread",
   "posts": [
-    "Viral hook capturing immediate curiosity or high-stakes story.",
-    "The painful reality or relatable dialogue (e.g. why traditional Loom/Drive or 40-page guides fail)...",
-    "The Demoly transformation: How you save money, hours, and look like a genius with interactive video...",
-    "The practical takeaway or framework for devs, agencies, or founders...",
-    "Engaging closing question or discussion starter for the community!\n\n#webdev #SaaS #AI"
+    "Viral hook — immediate curiosity or high-stakes story opener.",
+    "The painful reality in vivid, personal, human language...",
+    "The Demoly transformation — specific numbers, clear before/after...",
+    "The practical lesson the reader can steal and use TODAY...",
+    "Engaging closing question to spark real replies.\n\n#webdev #SaaS #AI"
   ],
   "media_filename": "exact_filename.mp4 or exact_filename.png or null"
 }}

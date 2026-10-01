@@ -313,6 +313,19 @@ def validate_generated_content(
         # Sanitize: company name and jargon
         text = sanitize_text_and_remove_jargon(text, allow_limited_dom=is_tech_lead)
 
+        # Sanitize: replace overused banned cliché phrases with fresh alternatives
+        BANNED_PHRASES = [
+            (r"\bsilent killer\b", "biggest hidden drain", re.IGNORECASE),
+            (r"\bprofit leak\b", "hidden margin drain", re.IGNORECASE),
+            (r"\bevery single week\b", "each week", re.IGNORECASE),
+            (r"\bstop billing and start answering\b", "switch from building to babysitting", re.IGNORECASE),
+            (r"\bcluttered Google Drive folder\b", "messy Drive dump", re.IGNORECASE),
+            (r"\bscattering.*?links across.*?channels\b", "dumping links across random channels", re.IGNORECASE | re.DOTALL),
+            (r"\bmassive waste of dev time\b", "a complete time sink", re.IGNORECASE),
+        ]
+        for pattern, replacement, flags in BANNED_PHRASES:
+            text = re.sub(pattern, replacement, text, flags=flags)
+
         # Sanitize: strip out any forbidden "Breakdown 👇", "Breakdown:", or pointing-down emojis
         text = re.sub(r"\s*(?:Breakdown|breakdown)?\s*[👇⬇]\s*$", "", text).strip()
         text = re.sub(r"\s+(?:Breakdown|breakdown)\s*[:\.]?\s*$", ".", text).strip()
@@ -726,19 +739,20 @@ def generate_planned_post(
     )
 
     # If this is an AI-generated image post, generate and attach the image now
-    if getattr(plan_item, "generate_image", False) and plan_item.format == "media":
-        print("[Content Generator] Generating image accurately matching post text...")
+    if getattr(plan_item, "generate_image", False):
+        print("[Content Generator] Generating AI visual image matching post content...")
         image_url = generate_image_for_post(
             focus_topic=plan_item.focus_topic,
             trend_connection=plan_item.trend_connection,
             post_text=result.posts[0] if result.posts else None,
+            account=account,
         )
         if image_url:
-            result.media_filename = None  # No catalog filename — it's generated
+            result.media_filename = None  # No catalog filename — it's AI-generated
             result.media_url = image_url
             print(f"[Content Generator] AI image attached: {image_url}")
         else:
-            # Fallback: pick fresh catalog asset for this account rather than posting blank or duplicate
+            # Fallback: pick fresh catalog asset rather than posting with no image
             print("[Content Generator] AI image generation failed. Falling back to fresh catalog asset.")
             available = get_available_media_for_account(account_name=account.name if account else None)
             if available:

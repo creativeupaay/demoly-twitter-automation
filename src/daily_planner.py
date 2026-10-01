@@ -95,30 +95,35 @@ ACCOUNT PERSONA SPECIALIZATION RULES:
    - MANDATORY: Must naturally tag official account @Demolyy4ls.
 
 PLANNING RULES & STRATEGY:
-1. 🔥 VIRAL STORYLINES, CLICKBAITS & CATCHY HOOKS (MANDATORY):
-   - Every post plan must aim for maximum engagement, high curiosity, and scroll-stopping hooks.
-   - Use storylines, relatable founder/agency drama, career leverage ("if you do this your boss will give you a promotion"), money-saving hacks ("how I saved $2,000/yr on video tools"), and contrarian insights.
-   - NEVER plan boring corporate announcements or formulaic openers (e.g. avoid "Most AI tools...", "Recording a 10-minute video is an agency lie...").
+1. 🔥 VIRAL HOOK TYPES — PICK ONE PER POST, NEVER REPEAT ACROSS THE 3 POSTS:
+   Each post MUST use a different hook type:
+   - Hook A: CAREER LEVERAGE — "Do this before your next client handover and your manager will ask how you leveled up so fast." / "If you do this one thing in your next delivery, your boss will give you a promotion."
+   - Hook B: MONEY SAVED / ROI — "I saved our agency $8,000 last year by cutting one specific meeting from our workflow." / "We added $12K profit margin by fixing one habit."
+   - Hook C: POWERFUL QUOTE OR CONFESSION — A short punchy insight or first-person confession that hits emotionally. Lowercase, raw, real. "we almost lost a $40K client because they couldn't find the logout button. here is what we changed."
+   - Hook D: RELATABLE NIGHTMARE — Paint a vivid, painful scene the reader has lived. "It's 11 PM. A client Slacks: where is the billing settings again?"
+   - Hook E: CONTRARIAN / HOT TAKE — "Unpopular opinion: If your client needs a call to understand your product, you failed at delivery."
+   - Hook F: CLICKBAIT CLIFFHANGER — "The one tool that saved our agency 4 hours a week. It's embarrassingly simple."
+   NEVER plan two posts with the same hook type in one day.
+   NEVER use boring openers like "Most AI tools are...", "Recording a 10-minute video...", "Delivering an enterprise build..."
 
 2. DYNAMIC SOURCE SELECTION & VARIETY:
    - Draw from Live Trends, Demoly FAQ capabilities, and Topic Bank angles.
-   - Ensure all 3 posts explore DIFFERENT angles so the feed feels vibrant, diverse, and high-value.
+   - Ensure all 3 posts explore COMPLETELY DIFFERENT angles, emotions, and content types.
 
 3. GUARANTEED FORMAT TRIO:
    Across the 3 items in "items":
-   - Exactly ONE item MUST have format="single" and post_type="single" with preferred_media=null and generate_image=false.
-   - Exactly ONE item MUST have format="thread" and post_type="thread" with preferred_media=null and generate_image=false.
-   - Exactly ONE item MUST have format="media" and post_type="single".
+   - Exactly ONE item MUST have format="single", post_type="single", preferred_media=null, generate_image=TRUE.
+     → This is the AI-IMAGE post. The single tweet gets a custom Pollinations-AI generated visual every day.
+   - Exactly ONE item MUST have format="thread", post_type="thread", preferred_media=null, generate_image=false.
+   - Exactly ONE item MUST have format="media", post_type="single", generate_image=false.
 
-4. 📸 MEDIA ASSET ROTATION & STRICT ANTI-DUPLICATION (FOR THE MEDIA POST):
-   - Check the AVAILABLE AUTHENTIC PRODUCT MEDIA section.
-   - NEVER pick any asset from the "RECENTLY USED MEDIA ON THIS ACCOUNT" list!
-   - You MUST pick a FRESH, UNUSED media asset from the eligible list so the account cycles through diverse tutorials and UI screens.
-   - Set preferred_media=<exact filename from fresh catalog> and generate_image=false.
-   - Alternatively, if the post is purely trend-first and no catalog asset fits, set generate_image=true and preferred_media=null.
+4. 📸 MEDIA ASSET ROTATION (FOR THE MEDIA POST):
+   - NEVER pick any asset from "RECENTLY USED MEDIA ON THIS ACCOUNT"!
+   - Pick a FRESH, UNUSED catalog asset. Set preferred_media=<exact filename>.
 
 5. STRICT DEDUPLICATION:
-   - Review RECENTLY PUBLISHED POSTS. NEVER repeat or re-hash any recent angles, hooks, or themes on this account or across accounts.
+   - Review RECENTLY PUBLISHED POSTS. NEVER repeat angles, hooks, or themes on this account or across accounts.
+   - BANNED KEYWORDS in any plan focus_topic: "silent killer", "profit leak", "every single week", "cluttered Google Drive", "stop billing and start answering".
 
 OUTPUT FORMAT:
 Return strictly valid JSON matching the DailyCadencePlan schema.
@@ -214,7 +219,7 @@ Create today's 3-post strategy plan now according to the planning rules.
         plan.items[0].format = "single"
         plan.items[0].post_type = "single"
         plan.items[0].preferred_media = None
-        plan.items[0].generate_image = False
+        plan.items[0].generate_image = True  # Always AI-generate an image for the single post
 
         plan.items[1].format = "thread"
         plan.items[1].post_type = "thread"
