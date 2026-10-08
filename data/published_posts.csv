@@ -1405,3 +1405,32 @@ how does your agency handle client handovers right now?
 We cut every awkward pause and filler word out of our onboarding walkthroughs using Demoly before sending the link.
 
 Try @Demolyy4ls for cleaner handovers.",6ac6210093d42c6319f91388,sent (2026-10-07T17:00:00.000Z),img14.png
+2026-10-08 10:57:53 UTC,Demoly Official (@Demolyy4ls),single,"I tested 5 different video storage setups for our latest enterprise client delivery to see why team members kept getting emergency Slack pings.
+
+Google Drive forces clients to download huge files locally just to view a simple layout.
+
+We switched to Demoly.
+
+#productivity #webdev",6ac77731f9e3728044fb8551,sent (2026-10-09T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791457018_flux_why_google_drive_fails_for_age.jpg
+2026-10-08 10:57:57 UTC,Demoly Official (@Demolyy4ls),thread,"delivering a $40k software build used to mean recording 50 unorganized screen captures and praying the client actually watched them. || Spoiler alert: they never do.
+
+Our development team spent the first full week after launch trapped on 15-minute Google Meet calls explaining where the export button lived. || That is when we realized standard async video tools were completely broken for client handovers. If a viewer doesn't speak out loud during recording, traditional search engines have zero idea what's on screen. || So our agency decided to build a better way. We founded Demoly to index visual browser actions and give clients an interactive search bar right inside the video player. || Now our clients get instant timestamped answers without booking a single meeting.
+
+How does your team handle project handovers right now?
+
+#buildinpublic #programming #ai",6ac777349117a76f3a296ea5,sent (2026-10-08T13:00:00.000Z),none
+2026-10-08 10:58:06 UTC,Demoly Official (@Demolyy4ls),single,"If you want your agency clients to stop messaging you at midnight asking where the export button is, give them an interface that lets them talk directly to the video instead of scheduling a call.
+
+Demoly makes UI walkthroughs searchable instantly.
+
+#tech #apps #review",6ac7773ee63932e2c59b5b13,sent (2026-10-08T17:00:00.000Z),img15.png
+2026-10-08 10:59:18 UTC,Manish - Tech Lead (@ManishBulchand9),single,"pasting a screenshot of a broken UI component into your terminal agent is like handing an architect a burnt postcard of a bridge.
+
+your ai model gets zero event timing or interactive layout states.
+
+we stream live browser telemetry straight to Claude Code via @Demolyy4ls.
+
+#ai",6ac77786d1ababbf88a986c0,sent (2026-10-09T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791457154_matrix_terminal_coding_agents_needing_brow.png
+2026-10-08 10:59:21 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"I did this for one complex frontend release and my engineering director asked how our bug queue dropped to zero so fast. || Most senior devs try debugging visual regressions by dumping raw browser screenshots into Cursor or Claude Code. Your AI agent gets zero event timing or state history and stays completely useless. || Static pixel images don't capture how a component actually mounted, when an async state resolved, or why a CSS grid collapsed on resize. || We stopped relying on lossy OCR and built event-level browser telemetry directly into @Demolyy4ls so AI agents get deterministic UI timelines. || Test this exact telemetry approach on your next sprint and watch how fast your tests pass.
+
+#webdev #benchmarks #tech",6ac7778908d405a9e7fa7c1c,sent (2026-10-08T13:00:00.000Z),none
