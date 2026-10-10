@@ -1495,3 +1495,64 @@ The game changed completely when we stopped guessing and watched our workspace a
 See how clean project tracking works inside @Demolyy4ls:
 
 #productivity #webdev",6ac8c87733f2b9fa8134c3b3,sent (2026-10-09T17:00:00.000Z),Demoly Tutorial #2_ How to Record a Video on Demoly _ Screen Recording Guide.mp4
+2026-10-10 10:08:46 UTC,Demoly Official (@Demolyy4ls),single,"we almost leaked our client's database credentials live on a screen recording because we forgot to edit out a test API key.
+
+that was the exact day we built Demoly with one-click element masking.
+
+#security #saas",6aca0eaed9cab260a7bd6127,sent (2026-10-11T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791626916_flux_the_exact_moment_agency_founde.jpg
+2026-10-10 10:08:49 UTC,Demoly Official (@Demolyy4ls),thread,"I tested 5 different ways to handle enterprise software handovers before our development team stopped losing entire Fridays to repeat Zoom calls. || The 40-page PDF guide we spent three weeks writing? Zero clients read it. They just book an impromptu 30-minute sync instead. || Loom didn't solve it either because it only searches spoken transcripts. If a button isn't named out loud, your client is completely stuck. || We finally fixed the loop by building Demoly so clients open a clean workspace and query the visual UI directly to find answers instantly. || How does your agency handle project handovers right now without burning billable hours?
+
+#webdev #softwareengineering",6aca0eb1c4de2d2b1221fe0c,sent (2026-10-10T13:00:00.000Z),none
+2026-10-10 10:08:54 UTC,Demoly Official (@Demolyy4ls),single,"We cut 150 hours of repeat client onboarding calls this quarter without hiring a single support agent.
+
+Our web agency used to drown in 30-minute syncs just to show where a billing button lived.
+
+Now clients query our visual Demoly recordings instantly.
+
+#saas",6aca0eb5ed92ed8fa5c48975,sent (2026-10-10T17:00:00.000Z),img18.png
+2026-10-10 10:09:07 UTC,Manish - Tech Lead (@ManishBulchand9),single,"feeding raw mp4 recordings into cursor during a frontend bug sprint is completely useless. your llm cannot inspect unlabelled layout states or guess where that click went.
+
+we stream structured browser telemetry straight to ai coding agents using @Demolyy4ls instead.
+
+#vibecoding",6aca0ec3bba9419ccbf9e505,sent (2026-10-11T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791626941_matrix_why_lossy_video_pixel_ocr_fails_on.png
+2026-10-10 10:09:10 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"Most senior engineers still paste raw UI screenshots into their coding assistant during a frontend sprint and expect clean code back. || Your LLM gets zero network payloads, zero mouse event timing, and zero console error traces from a flat image file. It is flying totally blind. || We stopped treating browser bugs like static graphic design tickets. When our team inspects a regression, we need live telemetry running under the hood. || That is why we built an MCP server straight into @Demolyy4ls. It streams structured layout states and runtime console logs directly into Cursor and Claude Code. || Your AI coding agent can inspect precise component hierarchies, catch failing network requests, and patch the bug instantly without guessing. || How does your team currently feed frontend bug telemetry to your local LLMs?
+
+#coding #ai #softwareengineering",6aca0ec6bba9419ccbf9e54f,sent (2026-10-10T13:00:00.000Z),none
+2026-10-10 10:09:14 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"Your junior dev just spent 35 minutes frame-by-frame blurring a Stripe test token out of a QA screen recording.
+
+That is not engineering. That is expensive pixel trimming. || We built non-destructive element masking and timeline cutting right into @Demolyy4ls so you can clean up a recording in 30 seconds.
+
+#security #webdev
+
+#productivity",6aca0ecaed92ed8fa5c4978d,sent (2026-10-10T17:00:00.000Z),img14.png
+2026-10-10 10:09:26 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"i used to send clients a Google Drive folder for our project handovers and cross my fingers they wouldn't message me saying the file failed to stream.
+
+they always did.
+
+now we package every client delivery inside @Demolyy4ls so links load instantly.
+
+#saas #productivity",6aca0ed6bba9419ccbf9e833,sent (2026-10-11T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791626961_matrix_why_google_drive_100mb_streaming_li.png
+2026-10-10 10:09:29 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),thread,"we spent three weeks writing a 40-page software manual for a client project delivery last quarter.
+
+it looked gorgeous. it had custom diagrams. it covered every single button.
+
+do you want to know how many times the client actually opened it? || zero times.
+
+instead, the client's operations director emailed us at 9 PM asking how to reset a team member's access token.
+
+our lead developer spent 25 minutes jumping on an emergency video call just to show one setting. || that moment broke something in our agency.
+
+we realized clients don't want to read documentation manuals. they don't want to dig through 10-minute video files either. || so we threw out the PDFs entirely.
+
+we started recording quick visual walkthroughs and packing them into organized project workspaces using @Demolyy4ls. || now when a client needs to find a configuration screen, they just type their question directly into the video player.
+
+the AI jumps straight to the exact second it appears on screen. || no more impromptu night calls. no more unread PDFs.
+
+how does your agency handle project handovers right now?
+
+#webdev #agency #productivity",6aca0ed9bba9419ccbf9e933,sent (2026-10-10T13:00:00.000Z),none
+2026-10-10 10:09:34 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"Unpopular opinion: If your client has to schedule a 30-min call just to find where the billing tab lives after launch, your project handover failed.
+
+We stopped answering repeat questions by letting clients query our recordings directly with @Demolyy4ls.
+
+#ai #saas #buildinpublic",6aca0edeb07d37ac976af28f,sent (2026-10-10T17:00:00.000Z),Demoly Tutorial #6_ How to Use AI Search _ Find Anything in Your Recordings.mp4
