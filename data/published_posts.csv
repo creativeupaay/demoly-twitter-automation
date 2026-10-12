@@ -1556,3 +1556,80 @@ how does your agency handle project handovers right now?
 We stopped answering repeat questions by letting clients query our recordings directly with @Demolyy4ls.
 
 #ai #saas #buildinpublic",6aca0edeb07d37ac976af28f,sent (2026-10-10T17:00:00.000Z),Demoly Tutorial #6_ How to Use AI Search _ Find Anything in Your Recordings.mp4
+2026-10-12 05:33:56 UTC,Demoly Official (@Demolyy4ls),single,"If you want your manager to notice your engineering output this quarter, stop letting client handovers turn into endless Slack threads.
+
+We switched our agency delivery workflows to Demoly so clients find their own answers instantly.
+
+#webdev #SaaS",6acc7144a9411fbcc56f34a5,sent (2026-10-13T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791783228_matrix_career_leverage_in_agency_delivery.png
+2026-10-12 05:34:00 UTC,Demoly Official (@Demolyy4ls),thread,"It's 11:45 PM. A client just Slacks: 'Hey, where did you put the custom user export button again?'
+
+You shipped the entire web platform three weeks ago. || Back when our agency Creative Upaay was delivering apps for our 85th global client, we tried everything to prevent these late-night pings.
+
+We spent two weeks writing a gorgeous 60-page PDF manual. || Do you want to know how many times the client opened that manual?
+
+Exactly zero.
+
+They just booked an impromptu 30-minute status call instead, pulling our lead developer straight off active sprint work. || That endless loop of repeat calls and dead video files is why our team built Demoly.
+
+We wanted walkthroughs that could actually answer questions when we aren't online. || Now, our team packages every client handover into a single interactive link where clients can search what they clicked on screen instantly.
+
+What handover workflow does your team use to stop repeat meetings?
+
+#buildinpublic #softwareengineering",6acc714763ff33d8c9aa56db,sent (2026-10-12T13:00:00.000Z),none
+2026-10-12 05:34:04 UTC,Demoly Official (@Demolyy4ls),single,"We recovered $11,000 in billable time last quarter just by changing how our agency handles client handoffs.
+
+Every project delivery used to trigger endless meetings because files were too heavy for browsers to stream.
+
+Demoly fixed that permanently.
+
+#tech #ai",6acc714c8e8dd50ffc6a531e,sent (2026-10-12T17:00:00.000Z),img2.png
+2026-10-12 05:34:20 UTC,Manish - Tech Lead (@ManishBulchand9),single,"I used to spend 2 hours reproducing flaky frontend bugs from vague QA tickets.
+
+Then I started sending devs a clean Demoly link that bundles visual UI actions with console traces instantly.
+
+My engineering director asked how our fix time dropped so fast.
+
+#softwareengineering",6acc715ba9411fbcc56f37de,sent (2026-10-13T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791783252_matrix_hook_a_career_leverage_browser_even.png
+2026-10-12 05:34:23 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"i saved our frontend team 14 hours of debugging friction last week by changing how we feed visual bugs into AI agents.
+
+forget pasting flat screenshots into Cursor or Claude Code during a #vibecoding sprint.
+
+here is what we did instead: || most senior devs try fixing UI regressions by dragging raw PNG files or chunky MP4 recordings straight into their coding assistant.
+
+your LLM gets zero click coordinates, zero route history, and zero network trace payloads from a static image. || that is just guessing with extra steps. your AI agent is flying completely blind without state transitions or DOM telemetry. || so we wired our browser testing directly into @Demolyy4ls to stream live click streams, console error traces, and layout states straight to our coding assistant via MCP server. || now when a bug drops in QA, our AI agent inspects the exact element hierarchy and DOM state instantly.
+
+how do your AI coding tools ingest visual bugs today?
+
+#vibecoding #softwareengineering #ai",6acc715fea568e911a52db23,sent (2026-10-12T13:00:00.000Z),none
+2026-10-12 05:34:28 UTC,Manish - Tech Lead (@ManishBulchand9),single,"I almost streamed a live Stripe secret key to our entire QA channel because I forgot to hide it before hitting record.
+
+That heart-drop moment is why we engineered non-destructive element-level masking directly into @Demolyy4ls.
+
+#security",6acc71648e8dd50ffc6a5572,sent (2026-10-12T17:00:00.000Z),img16.png
+2026-10-12 05:34:44 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"if you do this one thing in your next project handover, your managing director will literally ask how you saved the agency so many billable hours.
+
+stop recording unsearchable MP4s that clients never watch.
+
+we switched to @Demolyy4ls and let clients query videos directly.
+
+#SaaS",6acc71748e8dd50ffc6a56c9,sent (2026-10-13T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791783277_matrix_eliminating_unpaid_post_launch_scop.png
+2026-10-12 05:34:48 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),thread,"We spent three entire weeks writing a gorgeous 65-page PDF manual for our biggest software build last year.
+
+Custom diagrams. Color-coded button maps. Every single edge case covered. || Do you want to know how many times the client opened it during their first month live?
+
+Zero times.
+
+Instead, their operations lead scheduled four different 30-minute status calls just to ask where the invoice export button lived. || That is when we realized written documentation is a complete waste of developer time. Clients don't want to read a manual. They want to see the button on screen and get back to work. || So we burned our documentation templates and switched our agency client handovers to @Demolyy4ls.
+
+Now we record a quick browser walkthrough once. Clients just type their questions and the video jumps straight to the answer. || No more reading manuals. No more emergency status calls.
+
+How does your agency handle project handovers right now?
+
+#webdev",6acc71788e8dd50ffc6a5754,sent (2026-10-12T13:00:00.000Z),none
+2026-10-12 05:34:51 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"Unpopular opinion: If you don't know whether your client actually opened your project delivery link, you're flying blind on launch day.
+
+We started tracking exact viewer engagement inside @Demolyy4ls workspaces.
+
+No more guessing.
+
+#buildinpublic",6acc717bea568e911a52dd78,sent (2026-10-12T17:00:00.000Z),img18.png
