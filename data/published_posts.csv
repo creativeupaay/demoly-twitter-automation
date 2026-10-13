@@ -1691,3 +1691,62 @@ How does your agency handle handoffs today?
 We stopped booking repeat syncs by routing client questions through @Demolyy4ls instead.
 
 #buildinpublic",6accc2dd1d99033b8d1ec83a,sent (2026-10-12T17:00:00.000Z),img12.png
+2026-10-13 11:09:18 UTC,Demoly Official (@Demolyy4ls),single,"we spent three weeks filming 55 walkthrough videos for an enterprise law firm client. 
+
+then they scheduled a 30-min meeting just to ask where the billing export button lived.
+
+that painful afternoon is why we built Demoly so videos actually answer questions.
+
+#buildinpublic",6ace115e3b22eef92825f774,sent (2026-10-14T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791889745_flux_the_agency_origin_story_at_cre.jpg
+2026-10-13 11:09:22 UTC,Demoly Official (@Demolyy4ls),thread,"Hot take: Loom is not a client handover tool. It is an expensive video dump with a $20/seat invoice. || When our agency Creative Upaay delivered complex web apps, we tried using standard screen recorders for project sign-offs. || The problem? If you don't speak every single button name out loud on camera, audio transcription tools are completely blind to what is on screen. || Google Drive wasn't any better. Try streaming a 200MB walkthrough file to a non-technical client over their mobile browser. It fails instantly. || That exact operational bottleneck is why we built Demoly. We wanted video recordings that actually understand what users see and click. || Now clients can search for any button or form field instantly, even on silent walkthroughs, without scheduling repeat meetings.
+
+#SaaS #webdev #AI",6ace116195a61d8e02c74b71,sent (2026-10-13T13:00:00.000Z),none
+2026-10-13 11:09:26 UTC,Demoly Official (@Demolyy4ls),single,"I used to dread Friday client handovers because our team wasted hours re-explaining the same dashboard login steps on repeat Google Meet calls.
+
+Then we set up our workspace inside Demoly.
+
+Now clients just log in and query videos directly.
+
+#webdev",6ace116656d0e5a755e837f5,sent (2026-10-13T17:00:00.000Z),Demoly Tutorial #1_ Introduction & How to Log In _ Getting Started with Demoly.mp4
+2026-10-13 11:09:42 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"Most senior devs waste 20 minutes trying to explain a weird CSS bug to an AI coding agent by pasting static screenshots.
+
+Your LLM gets zero network traces, zero mouse event timing, and zero layout states from a flat PNG. || We started streaming live browser telemetry directly into Cursor during our last sprint using @Demolyy4ls, and our bug-fix cycle dropped to under two minutes.
+
+#programming",6ace1176a449b60ba8ca77bf,sent (2026-10-14T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791889774_matrix_the_architectural_limitation_of_los.png
+2026-10-13 11:09:45 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"I saved our frontend team 14 hours of debugging friction last week by changing how we feed visual bugs into AI coding assistants. || forget pasting flat screenshots into Cursor or Claude Code during a feature sprint. your llm gets zero network payloads, zero mouse event timing, and zero console error traces from a static image. || most devs try fixing UI glitches by writing long text prompts explaining what the button looked like. that is like debugging blindfolded. || instead, we stream structured visual telemetry and console error traces straight into @Demolyy4ls. || your coding agent gets precise event sequences, button clicks, and DOM states instantly. no manual reproduction steps needed. || how many hours did your team waste this week explaining layout bugs to an AI agent? test out @Demolyy4ls and fix them in minutes.#ai",6ace1179a449b60ba8ca780e,sent (2026-10-13T13:00:00.000Z),none
+2026-10-13 11:09:50 UTC,Manish - Tech Lead (@ManishBulchand9),single,"Your junior dev just spent 45 minutes blurring a client's staging API key out of a QA screen recording frame by frame.
+
+That is expensive pixel surgery.
+
+We built non-destructive element masking and timeline trimming directly into @Demolyy4ls.
+
+#webdev",6ace117e95a61d8e02c74ff8,sent (2026-10-13T17:00:00.000Z),img1.png
+2026-10-13 11:10:09 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"Most growing agencies hire more project managers when client handovers get chaotic.
+
+We did the exact opposite.
+
+We bundled our team into shared @Demolyy4ls client workspaces, streamlined project folders, and let interactive search handle repeat questions.
+
+#automation",6ace119156d0e5a755e83efa,sent (2026-10-14T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791889796_flux_unlocking_multi_seat_agency_co.jpg
+2026-10-13 11:10:12 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),thread,"we spent three full days mapping out a color-coded software manual for our largest web app delivery last month.
+
+it was 54 pages of custom diagrams and button instructions.
+
+do you want to know how many times the client opened it? zero. || the painful truth is that clients don't read documentation manuals.
+
+when they get confused on a Thursday afternoon, they don't flip to page 32.
+
+they immediately ping your team on Slack demanding a 30-minute sync to find a single button. || that is why we stopped writing static PDFs for our project handovers.
+
+now we record modular walkthroughs and package them inside @Demolyy4ls so clients can type their exact question and jump straight to the answer. || no more re-explaining where the billing portal lives.
+
+no more burning billable hours on repeat onboarding calls.
+
+how does your team currently handle client project handovers?
+
+#b2b #SaaS #buildinpublic",6ace1194daa3ebd6c491717c,sent (2026-10-13T13:00:00.000Z),none
+2026-10-13 11:10:19 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"It's 11:45 PM. A client drops a voice note complaining they can't figure out where the invoice export button lives.
+
+We stopped answering midnight pings by letting clients drop timestamped comments directly on @Demolyy4ls recordings.
+
+#SaaS",6ace119b56d0e5a755e8418c,sent (2026-10-13T17:00:00.000Z),Demoly Tutorial #7_ How to Comment on a Recording _ Collaborate & Share Feedback.mp4
