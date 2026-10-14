@@ -1750,3 +1750,44 @@ how does your team currently handle client project handovers?
 We stopped answering midnight pings by letting clients drop timestamped comments directly on @Demolyy4ls recordings.
 
 #SaaS",6ace119b56d0e5a755e8418c,sent (2026-10-13T17:00:00.000Z),Demoly Tutorial #7_ How to Comment on a Recording _ Collaborate & Share Feedback.mp4
+2026-10-14 09:02:53 UTC,Demoly Official (@Demolyy4ls),single,"I did this for one enterprise handover. Three months later I got a major promotion and lead dev title. 
+
+Stop sending dead video files that clients never watch.
+
+We packaged our handovers inside Demoly so videos answer client questions instantly.
+
+#buildinpublic",6acf453d8b335a30077f1f36,sent (2026-10-15T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791968562_flux_career_leverage_through_stream.jpg
+2026-10-14 09:02:57 UTC,Demoly Official (@Demolyy4ls),thread,"we recovered $11K in billable agency time last quarter just by changing how our developers hand off finished web apps to clients. || back when our agency Creative Upaay was building web platforms for our 85th global client, project handovers felt like an invisible hidden margin drain. || we would record 40 walkthrough videos, upload them to Google Drive, and wait for the inevitable ping from the client asking where the settings tab was. || clients refused to watch 10-minute files. instead, they scheduled 15-minute Google Meet calls to ask questions already inside the video. || we tried Loom, but its search only reads spoken transcripts. if you didn't say 'logout' on camera, the client couldn't find the logout button. || that massive frustration is why we built Demoly. it indexes every visual click and layout state so your videos answer client questions instantly. || stop booking repeat syncs for things you already built. let your walkthroughs do the heavy lifting.
+
+#SaaS #webdev #buildinpublic",6acf45408fea659be5b3ba5f,sent (2026-10-14T13:00:00.000Z),none
+2026-10-14 09:03:01 UTC,Demoly Official (@Demolyy4ls),single,"watching a client fast-forward through a 15-minute walkthrough just to find a single billing toggle is painful to witness.
+
+we built Demoly so clients can query video timelines directly with AI instead of hunting blindly.
+
+#AI",6acf4545167263592467bd55,sent (2026-10-14T17:00:00.000Z),Demoly Tutorial #6_ How to Use AI Search _ Find Anything in Your Recordings.mp4
+2026-10-14 09:03:11 UTC,Manish - Tech Lead (@ManishBulchand9),single,"Do this on your next frontend sprint and your CTO will ask how your bug resolution time dropped to zero.
+
+Stop letting QA drop blurry PNGs into Slack without console logs.
+
+Stream visual DOM telemetry and network traces directly into Demolyy4ls instead.
+
+#programming #webdev",6acf454f9ce69926b853e865,sent (2026-10-15T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791968587_matrix_the_developer_diagnostic_bundle_vid.png
+2026-10-14 09:03:14 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"unpopular opinion: heavy desktop screen recorders are completely the wrong architecture for web development and software handovers. || most tools try to capture your entire operating system. they record raw pixel streams at 60 fps, eat your CPU, and leave you with massive unsearchable MP4 files. || web apps live in the browser. your bug reports and client walkthroughs need actual web context—not a flat video of your entire desktop screen. || that's why we built @Demolyy4ls around a lightweight Chrome extension that tracks active tabs, network events, and user inputs continuously. || it stays out of your way during page reloads, keeps file sizes tiny, and gives your AI agent instant visual telemetry. switch your workflow today. #softwaredevelopment #ai",6acf45528fea659be5b3bf1a,sent (2026-10-14T13:00:00.000Z),none
+2026-10-14 09:03:20 UTC,Manish - Tech Lead (@ManishBulchand9),single,"I used to re-record entire 10-minute frontend walkthroughs just because our lead dev coughed on mic halfway through.
+
+Then I discovered how @Demolyy4ls handles timeline updates without breaking shared links.
+
+#coding #buildinpublic",6acf455867a2357e237967de,sent (2026-10-14T17:00:00.000Z),"Demoly Tutorial #3_ How to Edit Recordings _ Trim, Blur, Redact & More (1).mp4"
+2026-10-14 09:03:31 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"spending weeks building a custom web app for a client, only to hand them a static PDF manual nobody opens, is not delivery. it is sheer optimism.
+
+we stopped writing manual docs and started packing our handovers into @Demolyy4ls instead.
+
+#automation #webdev",6acf45638b335a30077f263d,sent (2026-10-15T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1791968607_matrix_replacing_bulky_40_page_software_do.png
+2026-10-14 09:03:34 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),thread,"i almost lost a $35K agency contract because our project folders looked like a digital junk drawer. true story. || when clients couldn't find the correct staging link or invoice tab, they didn't look through our files. they just booked a 30-minute Google Meet call. || we were burning 14 billable hours every week repeating answers on live calls for features we already built and documented. || so we completely restructured our delivery workflow inside @Demolyy4ls by building dedicated client project folders with modular walkthroughs. || now clients get one clean interactive link where they can search any button or form instantly without scheduling a single meeting. || how does your agency handle project handovers right now? let's chat below.
+
+#agency #SaaS #buildinpublic",6acf45668b335a30077f270c,sent (2026-10-14T13:00:00.000Z),none
+2026-10-14 09:03:40 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"i used to spend hours organizing client project folders across scattered cloud links until we centralized everything into shared spaces on @Demolyy4ls.
+
+clean folders mean instant sign-offs and zero midnight calls.
+
+#b2b #SaaS",6acf456c167263592467c591,sent (2026-10-14T17:00:00.000Z),"Demoly Tutorial #4_ Projects, Folders & Sharing _ Organize Your Recordings.mp4"
