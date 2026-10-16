@@ -1801,3 +1801,62 @@ We built Demoly so your clients can search every visual action on screen instant
 2026-10-15 08:36:45 UTC,Demoly Official (@Demolyy4ls),thread,"we delivered a massive cloud platform for a global legal enterprise last summer. our team recorded 55 separate onboarding walkthrough videos to make sure nothing was missed. || within seven days, the client account lead scheduled a 30-minute sync. why? because they could not find where the invoice export button lived inside the billing tab. || we had literally recorded a full two-minute breakdown of that exact screen three days prior. but the client refused to scrub through a dead MP4 file. || that single frustrating afternoon is why we built Demoly. videos shouldn't be passive media files waiting to be ignored. || when your client can just type a question and jump straight to the exact second the answer appears, everyone's calendar opens right up.
 
 #SaaS #buildinpublic",6ad0909c5ca32ad3c7edb5c6,sent (2026-10-15T13:00:00.000Z),none
+2026-10-16 08:31:34 UTC,Demoly Official (@Demolyy4ls),single,"Most screen recorders only index the words you speak out loud on mic.
+
+If you never said 'export settings' during your project demo, your client will never find that button.
+
+Demoly indexes every visual button on screen so clients find answers instantly.
+
+#ai #b2b #SaaS",6ad1e0e64ed7d375a450bac7,sent (2026-10-17T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1792139482_flux_the_loom_transcript_blind_spot.jpg
+2026-10-16 08:31:37 UTC,Demoly Official (@Demolyy4ls),thread,"we delivered a complex enterprise cloud portal last summer and recorded 55 separate walkthrough videos to ensure complete clarity.
+
+within four days, the client account lead scheduled a 30-minute sync to ask where the billing export button lived. || that painful Monday afternoon broke our team.
+
+we realized clients never watch 10-minute video files from start to finish. they want exact answers instantly without hunting through a digital junk drawer. || that exact operational bottleneck is why we built Demoly.
+
+instead of static MP4 uploads that only search spoken transcripts, Demoly indexes every visual button click and UI state automatically. || now clients just type their question into our public interactive link and jump straight to the exact second the feature appears.
+
+no repeat syncs. no wasted dev hours. || how many billable hours does your team lose each week to meetings that could have been answered by an interactive recording?
+
+#buildinpublic #webdev",6ad1e0e9a82f34dbe1524a40,sent (2026-10-16T13:00:00.000Z),none
+2026-10-16 08:31:45 UTC,Demoly Official (@Demolyy4ls),single,"We saved $8,400 in engineering time last month by deleting one ridiculous habit: re-recording an entire 10-minute client walkthrough just because our lead dev coughed on mic.
+
+Demoly's inline timeline editor lets you trim mistakes instantly without breaking shared links.
+
+#tech",6ad1e0f1a82f34dbe1524b37,sent (2026-10-16T17:00:00.000Z),"Demoly Tutorial #3_ How to Edit Recordings _ Trim, Blur, Redact & More (1).mp4"
+2026-10-16 08:32:00 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"Most engineers don't realize why traditional screen recorders break during frontend debugging. They capture raw 30fps pixels instead of structured UI state transitions.
+
+That is why your AI coding agent gets blind spots from flat MP4s. || We switched to stream-based visual telemetry inside @Demolyy4ls instead.
+
+#ai",6ad1e100a82f34dbe1524d9f,sent (2026-10-17T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1792139515_matrix_browser_internals_why_lossy_video_p.png
+2026-10-16 08:32:03 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"feeding raw 60fps video files into an AI coding agent is a massive waste of context window tokens. || your LLM needs exact element coordinates, network response payloads, and layout state transitions when you file a frontend bug, not a blurry 100MB MP4 file. || we started piping browser telemetry directly into Cursor and Claude Code using the MCP server inside @Demolyy4ls. || now our AI coding agent sees every button click, DOM mutation, and console error instantly without manual transcription. || how do you currently feed visual bug states into your local coding assistant during a sprint?
+
+#coding",6ad1e103ee2c696029c7b868,sent (2026-10-16T13:00:00.000Z),none
+2026-10-16 08:32:14 UTC,Manish - Tech Lead (@ManishBulchand9),single,"Most engineers waste 10 minutes skimming a 15-minute screen recording just to find where a bug was reproduced.
+
+We started using AI video search inside @Demolyy4ls to jump straight to the exact UI state in seconds.
+
+#webdev #coding",6ad1e10e9597cd166273b2f0,sent (2026-10-16T17:00:00.000Z),Demoly Tutorial #6_ How to Use AI Search _ Find Anything in Your Recordings.mp4
+2026-10-16 08:32:33 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"We recovered $14,000 in leaked billable hours last month just by changing how our agency handles post-launch client questions.
+
+Stop getting trapped on midnight Google Meet calls.
+
+Centralize every project folder and let interactive walkthroughs on @Demolyy4ls answer for you.",6ad1e121ee2c696029c7bd0d,sent (2026-10-17T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1792139541_flux_eliminating_unpaid_post_launch.jpg
+2026-10-16 08:32:36 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),thread,"If you want your agency partners to look like absolute wizards at your next client review, stop handing them written PDF guides.
+
+Here is the exact shift we made to keep clients happy without booking extra calls. || For years, our team spent entire weekends crafting 60-page documentation manuals whenever we shipped a new web app.
+
+We added gorgeous screenshots, colored highlights, and detailed bullet points explaining every dashboard toggle. || Do you want to know the brutal truth about those custom PDFs?
+
+Client stakeholders never read them. Not a single page. When they couldn't find the invoice settings on day three, they skipped straight to booking a 30-minute Google Meet call. || That is when our operations team banned static documentation entirely.
+
+We started packaging our final project handovers inside @Demolyy4ls instead, letting clients query video timelines directly with natural questions. || Now, when a client wants to know how to invite a teammate, they type it into the link and jump straight to the exact second it's demonstrated.
+
+How does your agency handle project handovers today?
+
+#agency #webdev #SaaS",6ad1e124a82f34dbe15257b6,sent (2026-10-16T13:00:00.000Z),none
+2026-10-16 08:32:42 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"Unpopular opinion: If your agency still scatters client walkthroughs across random cloud links and chat threads, you deserve the 11 PM emergency call.
+
+We organized our entire project folder workflow into @Demolyy4ls and client sign-offs dropped to zero meetings.
+
+#automation",6ad1e12aee2c696029c7bf79,sent (2026-10-16T17:00:00.000Z),Demoly Tutorial #5_ Record in a Project & Move Existing Recordings _ Demoly Guide.mp4
