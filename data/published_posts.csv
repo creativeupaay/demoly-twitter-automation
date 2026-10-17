@@ -1860,3 +1860,62 @@ How does your agency handle project handovers today?
 We organized our entire project folder workflow into @Demolyy4ls and client sign-offs dropped to zero meetings.
 
 #automation",6ad1e12aee2c696029c7bf79,sent (2026-10-16T17:00:00.000Z),Demoly Tutorial #5_ Record in a Project & Move Existing Recordings _ Demoly Guide.mp4
+2026-10-17 08:04:15 UTC,Demoly Official (@Demolyy4ls),single,"we delivered a massive enterprise web portal and recorded 55 separate walkthrough videos to ensure complete clarity.
+
+within four days, the client account lead scheduled a 30-minute sync to ask how to change their password.
+
+that painful realization is why we built Demoly.
+
+#AI",6ad32bffae173d6e00a94bda,sent (2026-10-18T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1792224244_flux_the_35_60_video_enterprise_han.jpg
+2026-10-17 08:04:18 UTC,Demoly Official (@Demolyy4ls),thread,"Unpopular opinion: If you have to speak out loud on camera just so your screen recorder can find a button later, your software tool is broken. || When our dev team was delivering web platforms at Creative Upaay, we noticed a massive flaw in popular video recorders like Loom. || They only index whatever words happen to escape your mouth while recording. If you never explicitly say 'export invoices' on microphone, the search bar fails. || That is why we built Demoly to inspect what actually happens visually on screen—capturing every single button, dropdown, and form field regardless of audio. || Clients don't want to listen to narration. They want to type a question and jump straight to the exact second the feature appears.
+
+#ai #buildinpublic #tech",6ad32c020b0d72757ac99a7a,sent (2026-10-17T13:00:00.000Z),none
+2026-10-17 08:04:24 UTC,Demoly Official (@Demolyy4ls),single,"I tested 5 screen recording tools for client handovers. The winner wasn't Loom.
+
+Organizing 40+ walkthrough videos used to be a digital junk drawer until we centralized projects inside Demoly.
+
+See how clean project folders fix sign-offs.
+
+#b2b",6ad32c07769b4579346a4009,sent (2026-10-17T17:00:00.000Z),"Demoly Tutorial #4_ Projects, Folders & Sharing _ Organize Your Recordings.mp4"
+2026-10-17 08:04:38 UTC,Manish - Tech Lead (@ManishBulchand9),single,"If you want your CTO to hand you the lead architect title next month, stop debugging frontend bugs by dumping raw image files into your IDE chat.
+
+Stream live DOM telemetry and console traces straight to your AI agent instead using @Demolyy4ls.
+
+#ai #coding #webdev",6ad32c16ae173d6e00a95366,sent (2026-10-18T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1792224271_matrix_hook_a_career_leverage_using_model.png
+2026-10-17 08:04:42 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"I saved our security audit budget by killing the 3-day manual redaction cycle for client handover screen recordings.
+
+Stripe keys and PII in production walkthroughs used to require grueling frame-by-frame blurring. || Now we lock non-destructive element redaction into @Demolyy4ls in one click.
+
+#security #tech
+
+#buildinpublic",6ad32c1a938409f1d077cc70,sent (2026-10-17T13:00:00.000Z),img13.png
+2026-10-17 08:04:45 UTC,Manish - Tech Lead (@ManishBulchand9),thread,"feeding raw 60fps video files into an AI coding agent is a massive waste of context window tokens. your LLM needs exact element coordinates, network response payloads, and layout state transitions when you file a frontend bug, not a blurry 100MB MP4 file. || most devs think passing a screen recording into Claude Code or Cursor is helpful. but standard video recorders strip out the underlying DOM structure. your AI agent gets zero visibility into form fields, button event listeners, or console warnings. || when a QA engineer records a reproducible frontend defect, the agent doesn't need to watch a 2-minute video frame by frame. it needs structured event telemetry and precise visual timestamps to pinpoint the exact broken state in your component tree. || that is why we re-architected how engineers capture staging bugs. instead of flat video streams, we capture clean visual event data and feed it directly into @Demolyy4ls. || if your AI coding agent is still guessing why a UI component broke from a flat PNG screenshot, you are debugging blind. switch to structured visual telemetry.
+
+#vibecoding #automation #b2b",6ad32c1d0b0d72757ac9a323,sent (2026-10-17T17:00:00.000Z),none
+2026-10-17 08:04:59 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"Most screen recorders limit your free tier to 5 minutes so you have to upgrade just to finish a client walkthrough.
+
+We hated that arbitrary wall.
+
+That's why @Demolyy4ls gives you unlimited recording duration and unlimited videos on the free plan.
+
+#b2b",6ad32c2b0b0d72757ac9a54a,sent (2026-10-18T04:30:00.000Z),/home/runner/work/demoly-twitter-automation/demoly-twitter-automation/assets/generated/1792224290_flux_why_demoly_offers_unlimited_vi.jpg
+2026-10-17 08:05:03 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),thread,"we spent four days recording custom software walkthroughs for a new enterprise client last month.
+
+every click, every hover, every input field meticulously demonstrated. || the problem?
+
+without visual markers, the client got lost five seconds in.
+
+they couldn't tell if we clicked the settings dropdown or the profile icon in the top right corner. || so they did what every confused client does:
+
+they booked a 30-minute sync to ask us to show them again. || we stopped the guesswork by turning on custom cursor highlight animations and visual click rings inside @Demolyy4ls. || now every click pulses with a subtle visual anchor.
+
+when clients rewatch our walkthroughs, their eyes go straight to the exact button without a single meeting.
+
+#webdev",6ad32c2e938409f1d077cf14,sent (2026-10-17T13:00:00.000Z),none
+2026-10-17 08:05:10 UTC,Sourabh - Agency Ops Strategist (@scalebysourabh),single,"i almost lost a $35K client because our handover links were scattered across 6 different Slack channels.
+
+true story.
+
+now we centralize every project inside clean client folders on @Demolyy4ls.
+
+#automation #b2b",6ad32c36938409f1d077d132,sent (2026-10-17T17:00:00.000Z),img7.png
